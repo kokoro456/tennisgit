@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function copyToClipboard() {
         if (stadium.length === 0) return alert('대진표가 없습니다.');
-        let text = `🎾 [TENNIS ARENA 대진표]\n`;
+        let text = `🎾 [UBUNTU 매칭시스템 대진표]\n`;
         document.querySelectorAll('.court-column').forEach(col => {
             text += `\n📍 ${col.firstChild.innerText}\n`;
             col.querySelectorAll('.match-card').forEach(card => {
