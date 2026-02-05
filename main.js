@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // App Version Logic
     let appVersion = localStorage.getItem('appVersion');
     if (!appVersion) {
-        appVersion = 'v0.1'; // Initial version
+        appVersion = 'v0.2'; // Updated version
         localStorage.setItem('appVersion', appVersion);
     }
     document.getElementById('app-version').innerText = appVersion;
