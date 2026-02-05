@@ -11,11 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggleBtn.innerHTML = '☀️';
         themeToggleBtn.classList.remove('bg-yellow-400', 'border-yellow-500', 'text-slate-800');
         themeToggleBtn.classList.add('bg-slate-700', 'text-white', 'border-slate-600');
+        console.log('초기 테마 설정: 다크 모드'); // Debug log
     } else {
         htmlElement.classList.remove('dark');
         themeToggleBtn.innerHTML = '🌙';
         themeToggleBtn.classList.remove('bg-slate-700', 'text-white', 'border-slate-600');
         themeToggleBtn.classList.add('bg-yellow-400', 'text-slate-800', 'border-yellow-500');
+        console.log('초기 테마 설정: 라이트 모드'); // Debug log
     }
 
     themeToggleBtn.addEventListener('click', () => {
@@ -25,12 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
             themeToggleBtn.innerHTML = '🌙';
             themeToggleBtn.classList.remove('bg-slate-700', 'text-white', 'border-slate-600');
             themeToggleBtn.classList.add('bg-yellow-400', 'text-slate-800', 'border-yellow-500');
+            console.log('테마 변경: 라이트 모드'); // Debug log
         } else {
             htmlElement.classList.add('dark');
             localStorage.setItem('theme', 'dark');
             themeToggleBtn.innerHTML = '☀️';
             themeToggleBtn.classList.remove('bg-yellow-400', 'border-yellow-500', 'text-slate-800');
             themeToggleBtn.classList.add('bg-slate-700', 'text-white', 'border-slate-600');
+            console.log('테마 변경: 다크 모드'); // Debug log
         }
     });
 
@@ -51,6 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const now = new Date();
     document.getElementById('capture-date').innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    // App Version Logic
+    let appVersion = localStorage.getItem('appVersion');
+    if (!appVersion) {
+        appVersion = 'v0.1'; // Initial version
+        localStorage.setItem('appVersion', appVersion);
+    }
+    document.getElementById('app-version').innerText = appVersion;
+    
     renderLibrary(); renderRanking(); initCourtInputs();
     document.getElementById('court-count').addEventListener('change', initCourtInputs);
 
