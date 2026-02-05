@@ -1,43 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Dark Mode Toggle Logic (Integrated)
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const htmlElement = document.documentElement;
-
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        htmlElement.classList.add('dark');
-        themeToggleBtn.innerHTML = '☀️';
-        themeToggleBtn.classList.remove('bg-yellow-400', 'border-yellow-500', 'text-slate-800');
-        themeToggleBtn.classList.add('bg-slate-700', 'text-white', 'border-slate-600');
-        console.log('초기 테마 설정: 다크 모드'); // Debug log
-    } else {
-        htmlElement.classList.remove('dark');
-        themeToggleBtn.innerHTML = '🌙';
-        themeToggleBtn.classList.remove('bg-slate-700', 'text-white', 'border-slate-600');
-        themeToggleBtn.classList.add('bg-yellow-400', 'text-slate-800', 'border-yellow-500');
-        console.log('초기 테마 설정: 라이트 모드'); // Debug log
-    }
-
-    themeToggleBtn.addEventListener('click', () => {
-        if (htmlElement.classList.contains('dark')) {
-            htmlElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            themeToggleBtn.innerHTML = '🌙';
-            themeToggleBtn.classList.remove('bg-slate-700', 'text-white', 'border-slate-600');
-            themeToggleBtn.classList.add('bg-yellow-400', 'text-slate-800', 'border-yellow-500');
-            console.log('테마 변경: 라이트 모드'); // Debug log
-        } else {
-            htmlElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-            themeToggleBtn.innerHTML = '☀️';
-            themeToggleBtn.classList.remove('bg-yellow-400', 'border-yellow-500', 'text-slate-800');
-            themeToggleBtn.classList.add('bg-slate-700', 'text-white', 'border-slate-600');
-            console.log('테마 변경: 다크 모드'); // Debug log
-        }
-    });
-
     // --- Original Application Logic (Reconstructed based on index.html and common patterns) ---
     const initialMembers = [
         { id: 1, name: '김철수', gender: '남', ntpr: 3.5 }, { id: 2, name: '이영희', gender: '여', ntpr: 3.0 },
@@ -282,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderRanking() {
         document.getElementById('ranking-list').innerHTML = [...members].sort((a,b)=>b.ntpr-a.ntpr).map((m,i)=>`
             <div class="flex items-center justify-between p-3 rounded-2xl ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'bg-white/5 border border-white/10 shadow-sm'}">
-                <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black font-mono tracking-tighter">${m.ntpr.toFixed(2)}</span>
+                <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black tracking-tighter">${m.ntpr.toFixed(2)}</span>
             </div>`).join('');
     }
 
