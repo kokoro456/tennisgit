@@ -27,7 +27,38 @@
         .capture-mode { display: block !important; overflow: visible !important; width: fit-content !important; }
         .capture-mode .court-column { margin-bottom: 2rem; width: 600px !important; } /* 캡처 시 가로폭 고정 */
 
-        .rank-1 { background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); border: 1px solid #fbbf24; color: #92400e !important; }
+        @keyframes rank-pulse {
+            0% { transform: scale(1.02); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
+        }
+        .rank-1 { 
+            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); 
+            border: 1px solid #fbbf24; 
+            color: #92400e !important; 
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.4);
+            transform: scale(1.02);
+            position: relative;
+            z-index: 10;
+            animation: rank-pulse 2s infinite ease-in-out;
+        }
+        .rank-2 { 
+            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); 
+            border: 1px solid #94a3b8; 
+            color: #334155 !important;
+            box-shadow: 0 6px 12px rgba(148, 163, 184, 0.2);
+        }
+        .rank-3 { 
+            background: linear-gradient(135deg, #ffedd5 0%, #fdba74 100%); 
+            border: 1px solid #f97316; 
+            color: #7c2d12 !important;
+            box-shadow: 0 6px 12px rgba(249, 115, 22, 0.2);
+        }
+        .rank-1:hover, .rank-2:hover, .rank-3:hover {
+            transform: translateY(-3px) scale(1.05);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: brightness(1.05);
+        }
         .score-input { width: 50px; text-align: center; font-weight: 900; font-size: 1.1rem; background: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0; padding: 5px 0; }
         .match-finished { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
         ::-webkit-scrollbar { height: 5px; }
@@ -367,7 +398,7 @@
         function renderRanking() {
             document.getElementById('ranking-list').innerHTML = [...members].sort((a,b)=>b.ntpr-a.ntpr).map((m,i)=>`
                 <div class="flex items-center justify-between p-3 rounded-2xl ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'bg-white/5 border border-white/10 shadow-sm'}">
-                    <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black font-mono tracking-tighter">${m.ntpr.toFixed(2)}</span>
+                    <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black tracking-tighter">${m.ntpr.toFixed(2)}</span>
                 </div>`).join('');
         }
 
