@@ -167,39 +167,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateTimeline() {
         if (stadium.length < 4) return alert('4명 이상 선택하세요.');
-        const board = document.getElementById('timeline-board'); board.innerHTML = '';
-        stadium.forEach(p => playerStats[p.id] = { games: 0, wins: 0, losses: 0, ptsWon: 0, ptsLost: 0 });
+        const board = document.getElementById('timeline-board');
+        board.innerHTML = '';
+        const courtCount = parseInt(document.getElementById('court-count').value);
+        const matchType = document.getElementById('match-type').value;
 
-        for (let c = 1; c <= parseInt(document.getElementById('court-count').value); c++) {
+        // Reset stats for generation
+        stadium.forEach(p => playerStats[p.id].games = 0);
+
+        // Find max slots across all courts
+        let maxSlots = 0;
+        const courtConfigs = [];
+        for (let c = 1; c <= courtCount; c++) {
             const start = parseInt(document.getElementById(`court-${c}-start`).value);
-            const slots = parseInt(document.getElementById(`court-${c}-duration`).value) * 2;
+            const duration = parseInt(document.getElementById(`court-${c}-duration`).value);
+            const slots = duration * 2;
+            if (slots > maxSlots) maxSlots = slots;
+            courtConfigs.push({ id: c, start, slots, matches: [] });
+        }
+
+        // Generate matches slot by slot to prevent duplicates
+        for (let s = 0; s < maxSlots; s++) {
+            let assignedInSlot = new Set();
+            
+            for (let c = 0; c < courtCount; c++) {
+                const config = courtConfigs[c];
+                if (s < config.slots) {
+                    const players = pickPlayersForMatch(matchType, assignedInSlot);
+                    config.matches.push(players);
+                    players.forEach(p => {
+                        if (p) {
+                            assignedInSlot.add(p.id);
+                            playerStats[p.id].games++;
+                        }
+                    });
+                }
+            }
+        }
+
+        // Render columns
+        courtConfigs.forEach(config => {
             const col = document.createElement('div');
             col.className = 'court-column space-y-4';
-            col.innerHTML = `<div class="p-4 bg-slate-900 text-white rounded-[1.8rem] shadow-xl font-black text-center text-[9px] uppercase tracking-widest">${c}번 코트</div>`;
+            col.innerHTML = `<div class="p-4 bg-slate-900 text-white rounded-[1.8rem] shadow-xl font-black text-center text-[9px] uppercase tracking-widest">${config.id}번 코트</div>`;
             
-            for (let s = 0; s < slots; s++) {
-                const h = start + Math.floor(s/2);
+            config.matches.forEach((players, s) => {
+                const h = config.start + Math.floor(s/2);
                 const timeStr = `${h < 10 ? '0'+h : h}:${(s%2===0 ? '00' : '30')}`;
-                const players = getSmartMatch(document.getElementById('match-type').value, c);
                 col.innerHTML += renderMatchCard(s + 1, timeStr, players);
-                players.forEach(p => { if(p) playerStats[p.id].games++; });
-            }
+            });
             board.appendChild(col);
             col.querySelectorAll('.drag-zone').forEach(el => new Sortable(el, { group: 'tennis', animation: 200 }));
-        }
+        });
+        
         renderStats();
     }
 
-    function getSmartMatch(type, courtIdx) {
-        let pool = [...stadium].sort((a, b) => playerStats[a.id].games - playerStats[b.id].games || Math.random() - 0.5);
+    function pickPlayersForMatch(type, assignedInSlot) {
+        // Pool consists of players NOT assigned in the current slot
+        let availablePool = stadium.filter(p => !assignedInSlot.has(p.id))
+            .sort((a, b) => playerStats[a.id].games - playerStats[b.id].games || Math.random() - 0.5);
+        
+        if (availablePool.length < 4) return [null, null, null, null];
+
+        let males = availablePool.filter(p => p.gender === '남');
+        let females = availablePool.filter(p => p.gender === '여');
+
         if (type === 'gender') {
-            let m = pool.filter(p => p.gender === '남'), f = pool.filter(p => p.gender === '여');
-            return courtIdx % 2 !== 0 ? (m.length >= 4 ? m.slice(0, 4) : pool.slice(0, 4)) : (f.length >= 4 ? f.slice(0, 4) : pool.slice(0, 4));
+            // Prioritize Same-Sex (MD/WD)
+            if (males.length >= 4) return males.slice(0, 4);
+            if (females.length >= 4) return females.slice(0, 4);
+            // If not enough for MD/WD, try Mixed (2M2F)
+            if (males.length >= 2 && females.length >= 2) return [males[0], males[1], females[0], females[1]];
+            // Fallback to any 4
+            return availablePool.slice(0, 4);
         } else if (type === 'mixed') {
-            let m = pool.filter(p => p.gender === '남'), f = pool.filter(p => p.gender === '여');
-            return (m.length >= 2 && f.length >= 2) ? [m[0], f[0], m[1], f[1]] : pool.slice(0, 4);
+            // Prioritize Mixed (2M2F)
+            if (males.length >= 2 && females.length >= 2) return [males[0], females[0], males[1], females[1]];
+            // Fallback to Same-Sex if Mixed not possible
+            if (males.length >= 4) return males.slice(0, 4);
+            if (females.length >= 4) return females.slice(0, 4);
+            return availablePool.slice(0, 4);
         }
-        return pool.slice(0, 4);
+        
+        return availablePool.slice(0, 4);
     }
 
     function renderMatchCard(round, time, p) {
