@@ -4,10 +4,10 @@
     <meta name="google-site-verification" content="YRPalWx87Cta8Q_YBCPgL6h_ncC1xYJnWLfS6APPzcg" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="UBUNTU Tennis Matching System - A specialized tool for fair team division, real-time score tracking, and match sheet generation for tennis clubs.">
-    <meta name="keywords" content="tennis, match maker, team generator, tennis ranking, tennis club management">
+    <meta name="description" content="테니스 대진표 만들기, 공정한 팀 나누기, 실시간 점수 기록까지! UBUNTU 테니스 매칭 시스템은 테니스 동호회를 위한 최고의 대진표 생성 어플입니다.">
+    <meta name="keywords" content="테니스 대진표, 테니스 대진표 만들기, 테니스 매칭 어플, 테니스 팀 나누기, 테니스 대진표 생성기, tennis match maker">
     <meta name="google-site-verification" content="YRPalWx87Cta8Q_YBCPgL6h_ncC1xYJnWLfS6APPzcg" />
-    <title>UBUNTU 매칭시스템 v8.5 - 고품질 테니스 대진표 생성기</title>
+    <title>테니스 대진표 만들기 - UBUNTU 고품질 테니스 매칭 어플</title>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -306,10 +306,188 @@
         document.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
             document.getElementById('capture-date').innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // App Version Logic
+            let appVersion = localStorage.getItem('appVersion') || 'v8.5';
+            document.getElementById('app-version').innerText = appVersion;
+
             updateUI();
             renderLibrary(); renderRanking(); initCourtInputs();
             document.getElementById('court-count').addEventListener('change', initCourtInputs);
         });
+
+        function togglePlayer(id) {
+            const idx = stadium.findIndex(m => m.id === id);
+            if (idx > -1) { 
+                stadium.splice(idx, 1); 
+                delete playerStats[id]; 
+            } else {
+                const p = members.find(m => m.id === id);
+                if (p) { 
+                    stadium.push({...p}); 
+                    playerStats[id] = { games: 0, wins: 0, losses: 0, ptsWon: 0, ptsLost: 0 }; 
+                }
+            }
+            renderStadium(); renderLibrary(); renderStats();
+        }
+
+        function addOrUpdatePlayer() {
+            const name = document.getElementById('p-name').value.trim();
+            const gender = document.getElementById('p-gender').value;
+            const ntpr = parseFloat(document.getElementById('p-ntpr').value);
+            if (!name) return alert(currentLang === 'ko' ? '이름을 입력하세요' : 'Please enter name');
+
+            if (editingId) {
+                const p = members.find(m => m.id === editingId);
+                if(p) { p.name = name; p.gender = gender; p.ntpr = ntpr; }
+                editingId = null; 
+                document.getElementById('submit-btn').innerText = "Add / Update";
+            } else { 
+                members.push({ id: Date.now(), name, gender, ntpr }); 
+            }
+            saveLocal(); renderLibrary(); renderRanking(); resetForm();
+        }
+
+        function editPlayer(id, e) {
+            if(e) e.stopPropagation();
+            const p = members.find(m => m.id === id);
+            editingId = id; 
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-gender').value = p.gender;
+            document.getElementById('p-ntpr').value = p.ntpr;
+            document.getElementById('submit-btn').innerText = currentLang === 'ko' ? "정보 수정" : "Update Info";
+            document.getElementById('cancel-btn').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() { 
+            editingId = null; 
+            document.getElementById('p-name').value = ''; 
+            document.getElementById('submit-btn').innerText = "Add / Update";
+            document.getElementById('cancel-btn').classList.add('hidden'); 
+        }
+
+        function generateTimeline() {
+            if (stadium.length < 4) return alert(currentLang === 'ko' ? '4명 이상 선택하세요.' : 'Select at least 4 players.');
+            const board = document.getElementById('timeline-board');
+            board.innerHTML = '';
+            const courtCount = parseInt(document.getElementById('court-count').value);
+            const matchType = document.getElementById('match-type').value;
+
+            stadium.forEach(p => {
+                if (!playerStats[p.id]) playerStats[p.id] = { games: 0, wins: 0, losses: 0, ptsWon: 0, ptsLost: 0 };
+                playerStats[p.id].games = 0;
+            });
+
+            let maxSlots = 0;
+            const courtConfigs = [];
+            for (let c = 1; c <= courtCount; c++) {
+                const start = parseInt(document.getElementById(`court-${c}-start`).value);
+                const duration = parseInt(document.getElementById(`court-${c}-duration`).value);
+                const slots = duration * 2;
+                if (slots > maxSlots) maxSlots = slots;
+                courtConfigs.push({ id: c, start, slots, matches: [] });
+            }
+
+            for (let s = 0; s < maxSlots; s++) {
+                let assignedInSlot = new Set();
+                for (let c = 0; c < courtCount; c++) {
+                    const config = courtConfigs[c];
+                    if (s < config.slots) {
+                        const players = pickPlayersForMatch(matchType, assignedInSlot);
+                        config.matches.push(players);
+                        players.forEach(p => {
+                            if (p) {
+                                assignedInSlot.add(p.id);
+                                playerStats[p.id].games++;
+                            }
+                        });
+                    }
+                }
+            }
+
+            courtConfigs.forEach(config => {
+                const col = document.createElement('div');
+                col.className = 'court-column space-y-4';
+                col.innerHTML = `<div class="p-4 bg-slate-900 text-white rounded-[1.8rem] shadow-xl font-black text-center text-[9px] uppercase tracking-widest">${config.id}${translations[currentLang].court}</div>`;
+                
+                config.matches.forEach((players, s) => {
+                    const h = config.start + Math.floor(s/2);
+                    const timeStr = `${h < 10 ? '0'+h : h}:${(s%2===0 ? '00' : '30')}`;
+                    col.innerHTML += renderMatchCard(s + 1, timeStr, players);
+                });
+                board.appendChild(col);
+                col.querySelectorAll('.drag-zone').forEach(el => new Sortable(el, { group: 'tennis', animation: 200 }));
+            });
+            renderStats();
+        }
+
+        function pickPlayersForMatch(type, assignedInSlot) {
+            let availablePool = stadium.filter(p => !assignedInSlot.has(p.id))
+                .sort((a, b) => playerStats[a.id].games - playerStats[b.id].games || Math.random() - 0.5);
+            
+            if (availablePool.length < 4) return [null, null, null, null];
+
+            let males = availablePool.filter(p => p.gender === '남');
+            let females = availablePool.filter(p => p.gender === '여');
+
+            if (type === 'gender') {
+                if (males.length >= 4) return males.slice(0, 4);
+                if (females.length >= 4) return females.slice(0, 4);
+                if (males.length >= 2 && females.length >= 2) return [males[0], males[1], females[0], females[1]];
+                return availablePool.slice(0, 4);
+            } else if (type === 'mixed') {
+                if (males.length >= 2 && females.length >= 2) return [males[0], females[0], males[1], females[1]];
+                if (males.length >= 4) return males.slice(0, 4);
+                if (females.length >= 4) return females.slice(0, 4);
+                return availablePool.slice(0, 4);
+            }
+            return availablePool.slice(0, 4);
+        }
+
+        function applyNtpr(ids, change) { 
+            ids.forEach(id => { 
+                const m = members.find(m => m.id == id); 
+                if (m) m.ntpr = Math.max(1.0, Math.min(7.0, m.ntpr + change)); 
+            }); 
+        }
+
+        function renderRanking() {
+            document.getElementById('ranking-list').innerHTML = [...members].sort((a,b)=>b.ntpr-a.ntpr).map((m,i)=>`
+                <div class="flex items-center justify-between p-3 rounded-2xl ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'bg-white/5 border border-white/10 shadow-sm'}">
+                    <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black tracking-tighter">${m.ntpr.toFixed(2)}</span>
+                </div>`).join('');
+        }
+
+        function resetAllData() { 
+            if(confirm(currentLang === 'ko' ? '모든 데이터를 초기화할까요?' : 'Reset all data?')) { 
+                localStorage.clear(); location.reload(); 
+            } 
+        }
+
+        function exportData() {
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(JSON.stringify(members, null, 2));
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', `TennisArena_Backup_${new Date().toLocaleDateString()}.json`);
+            linkElement.click();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        members = imported;
+                        saveLocal(); location.reload();
+                    } else { alert('Invalid format'); }
+                } catch (err) { alert('Error reading file'); }
+            };
+            reader.readAsText(file);
+        }
 
         function toggleLanguage() {
             currentLang = currentLang === 'ko' ? 'en' : 'ko';
