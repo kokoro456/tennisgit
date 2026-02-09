@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>UBUNTU 매칭시스템 v8.5</title>
+    <meta name="description" content="UBUNTU Tennis Matching System - A specialized tool for fair team division, real-time score tracking, and match sheet generation for tennis clubs.">
+    <meta name="keywords" content="tennis, match maker, team generator, tennis ranking, tennis club management">
+    <title>UBUNTU 매칭시스템 v8.5 - 고품질 테니스 대진표 생성기</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4308556336183383"
      crossorigin="anonymous"></script>
     <script>
@@ -147,12 +149,39 @@
 
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pb-20">
             <div class="lg:col-span-7 glass-card p-8 rounded-[3rem]">
-                <h3 class="text-lg font-black text-slate-800 uppercase mb-6 tracking-tight">📊 오늘 매칭 상세 통계</h3>
+                <h3 class="text-lg font-black text-slate-800 uppercase mb-6 tracking-tight" data-i18n="statsTitle">📊 오늘 매칭 상세 통계</h3>
                 <div id="stat-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- NEW: About & Guide Section for SEO/AdSense -->
+                <div class="mt-12 pt-12 border-t border-slate-100">
+                    <h3 class="text-xl font-black text-slate-900 mb-4" data-i18n="aboutTitle">UBUNTU 테니스 매칭 시스템이란?</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-6" data-i18n="aboutDesc">
+                        UBUNTU 매칭 시스템은 테니스 동호회와 클럽을 위한 전문적인 대진표 생성 도구입니다. 공정한 팀 배분, 실시간 경기 결과 기록, 그리고 시각적으로 아름다운 대진표 이미지를 제공하여 클럽 운영의 효율성을 극대화합니다. 모든 데이터는 브라우저 로컬 저장소에 안전하게 보관됩니다.
+                    </p>
+                    <h4 class="text-sm font-black text-slate-800 mb-3" data-i18n="guideTitle">💡 주요 사용법</h4>
+                    <ul class="text-xs text-slate-500 space-y-2 list-disc pl-4" data-i18n="guideList">
+                        <li>플레이어 매니저에서 멤버를 추가하거나 편집하세요.</li>
+                        <li>참석할 인원을 선택하고 코트 수와 매칭 방식을 설정합니다.</li>
+                        <li>'생성' 버튼을 눌러 자동으로 라운드별 대진표를 만듭니다.</li>
+                        <li>경기 후 점수를 입력하면 실시간으로 클럽 랭킹과 통계가 업데이트됩니다.</li>
+                        <li>카톡 복사나 이미지 저장 기능을 통해 결과를 공유하세요.</li>
+                    </ul>
+                </div>
             </div>
             <div class="lg:col-span-5 stadium-panel p-8 rounded-[3rem] shadow-2xl text-white">
-                <h3 class="text-lg font-black text-blue-400 uppercase mb-8 tracking-[0.2em]">🏆 Club Ranking</h3>
+                <h3 class="text-lg font-black text-blue-400 uppercase mb-8 tracking-[0.2em]" data-i18n="rankingTitle">🏆 Club Ranking</h3>
                 <div id="ranking-list" class="space-y-3 font-mono text-xs"></div>
+                
+                <!-- NEW: Privacy/Policy Section -->
+                <div class="mt-12 pt-12 border-t border-slate-700/50 text-[10px] text-slate-400 leading-relaxed">
+                    <p class="mb-2 font-bold text-slate-300" data-i18n="policyTitle">개인정보 및 이용정책</p>
+                    <p data-i18n="policyDesc">본 서비스는 별도의 회원가입 없이 이용 가능하며, 입력된 플레이어 정보 및 경기 데이터는 귀하의 브라우저에만 저장됩니다. 어떠한 데이터도 외부 서버로 전송되지 않으므로 안심하고 사용하실 수 있습니다.</p>
+                    <div class="mt-4 flex gap-4">
+                        <a href="#" class="underline">Privacy Policy</a>
+                        <a href="#" class="underline">Terms of Service</a>
+                        <a href="mailto:support@example.com" class="underline">Contact Us</a>
+                    </div>
+                </div>
             </div>
         </section>
         
@@ -191,7 +220,15 @@
                 save: "저장",
                 done: "완료 ✓",
                 played: "경기 완료",
-                noMatch: "참석자를 선택하고 대진을 생성하세요."
+                noMatch: "참석자를 선택하고 대진을 생성하세요.",
+                statsTitle: "📊 오늘 매칭 상세 통계",
+                aboutTitle: "UBUNTU 테니스 매칭 시스템이란?",
+                aboutDesc: "UBUNTU 매칭 시스템은 테니스 동호회와 클럽을 위한 전문적인 대진표 생성 도구입니다. 공정한 팀 배분, 실시간 경기 결과 기록, 그리고 시각적으로 아름다운 대진표 이미지를 제공하여 클럽 운영의 효율성을 극대화합니다. 모든 데이터는 브라우저 로컬 저장소에 안전하게 보관됩니다.",
+                guideTitle: "💡 주요 사용법",
+                guideList: "<li>플레이어 매니저에서 멤버를 추가하거나 편집하세요.</li><li>참석할 인원을 선택하고 코트 수와 매칭 방식을 설정합니다.</li><li>'생성' 버튼을 눌러 자동으로 라운드별 대진표를 만듭니다.</li><li>경기 후 점수를 입력하면 실시간으로 클럽 랭킹과 통계가 업데이트됩니다.</li><li>카톡 복사나 이미지 저장 기능을 통해 결과를 공유하세요.</li>",
+                rankingTitle: "🏆 Club Ranking",
+                policyTitle: "개인정보 및 이용정책",
+                policyDesc: "본 서비스는 별도의 회원가입 없이 이용 가능하며, 입력된 플레이어 정보 및 경기 데이터는 귀하의 브라우저에만 저장됩니다. 어떠한 데이터도 외부 서버로 전송되지 않으므로 안심하고 사용하실 수 있습니다."
             },
             en: {
                 lang: "KO",
@@ -221,7 +258,15 @@
                 save: "Save",
                 done: "Done ✓",
                 played: "Played",
-                noMatch: "Select players and generate matches."
+                noMatch: "Select players and generate matches.",
+                statsTitle: "📊 Today's Match Stats",
+                aboutTitle: "What is UBUNTU Tennis Matcher?",
+                aboutDesc: "UBUNTU Matching System is a professional match sheet generation tool for tennis clubs. It maximizes club management efficiency by providing fair team allocation, real-time match results, and beautiful match sheet images. All data is securely stored in your browser's local storage.",
+                guideTitle: "💡 How to Use",
+                guideList: "<li>Add or edit members in the Player Manager.</li><li>Select participants and configure court count and match type.</li><li>Click 'Generate' to automatically create round-by-round matches.</li><li>Enter scores after matches to update club rankings and stats in real-time.</li><li>Share results using Copy Text or Save Image features.</li>",
+                rankingTitle: "🏆 Club Ranking",
+                policyTitle: "Privacy & Usage Policy",
+                policyDesc: "This service can be used without registration. Player info and match data are stored only in your browser. No data is sent to external servers, so you can use it with peace of mind."
             }
         };
 
