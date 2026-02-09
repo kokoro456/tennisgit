@@ -76,8 +76,9 @@
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-1">Full Export Engine v8.5 <span id="app-version" class="text-blue-500 ml-2"></span></p>
             </div>
             <div class="flex flex-wrap gap-2">
-                <button onclick="exportData()" class="bg-blue-50 text-blue-600 px-3 py-2 rounded-xl text-[10px] font-black border border-blue-100">내보내기</button>
-                <button onclick="document.getElementById('importFile').click()" class="bg-orange-50 text-orange-600 px-3 py-2 rounded-xl text-[10px] font-black border border-orange-100">불러오기</button>
+                <button onclick="toggleLanguage()" id="lang-btn" class="bg-white text-slate-900 px-3 py-2 rounded-xl text-[10px] font-black border border-slate-200">EN</button>
+                <button onclick="exportData()" class="bg-blue-50 text-blue-600 px-3 py-2 rounded-xl text-[10px] font-black border border-blue-100" data-i18n="export">내보내기</button>
+                <button onclick="document.getElementById('importFile').click()" class="bg-orange-50 text-orange-600 px-3 py-2 rounded-xl text-[10px] font-black border border-orange-100" data-i18n="import">불러오기</button>
                 <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
                 <div class="h-8 w-[1px] bg-slate-200 mx-1 hidden md:block"></div>
                 <button onclick="copyToClipboard()" class="bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-[10px] font-black">카톡 복사</button>
@@ -159,6 +160,71 @@
     </div>
 
     <script>
+        const translations = {
+            ko: {
+                lang: "EN",
+                export: "내보내기",
+                import: "불러오기",
+                copy: "카톡 복사",
+                saveImage: "전체 이미지 저장 📸",
+                playerManager: "Player Manager",
+                name: "이름",
+                male: "남성",
+                female: "여성",
+                addUpdate: "Add / Update",
+                courtStatus: "코트대관상태",
+                participants: "참석인원",
+                matchTypeGender: "남복/여복",
+                matchTypeMixed: "혼복",
+                matchTypeRandom: "랜덤",
+                generate: "생성",
+                matchSheet: "대진표",
+                stats: "📊 오늘 매칭 상세 통계",
+                ranking: "🏆 Club Ranking",
+                reset: "Reset All Arena Data",
+                playerCount: "명",
+                court: "번 코트",
+                hour: "시간",
+                wait: "대기",
+                save: "저장",
+                done: "완료 ✓",
+                played: "경기 완료",
+                noMatch: "참석자를 선택하고 대진을 생성하세요."
+            },
+            en: {
+                lang: "KO",
+                export: "Export",
+                import: "Import",
+                copy: "Copy Text",
+                saveImage: "Save Image 📸",
+                playerManager: "Player Manager",
+                name: "Name",
+                male: "Male",
+                female: "Female",
+                addUpdate: "Add / Update",
+                courtStatus: "Court Status",
+                participants: "Participants",
+                matchTypeGender: "MD/WD",
+                matchTypeMixed: "Mixed",
+                matchTypeRandom: "Random",
+                generate: "Generate",
+                matchSheet: "Match Sheet",
+                stats: "📊 Today's Match Stats",
+                ranking: "🏆 Club Ranking",
+                reset: "Reset All Arena Data",
+                playerCount: "players",
+                court: "Court",
+                hour: "hr",
+                wait: "Wait",
+                save: "Save",
+                done: "Done ✓",
+                played: "Played",
+                noMatch: "Select players and generate matches."
+            }
+        };
+
+        let currentLang = localStorage.getItem('tennis_lang') || 'ko';
+
         const initialMembers = [
             { id: 1, name: '김철수', gender: '남', ntpr: 3.5 }, { id: 2, name: '이영희', gender: '여', ntpr: 3.0 },
             { id: 3, name: '박지성', gender: '남', ntpr: 4.5 }, { id: 4, name: '손흥민', gender: '남', ntpr: 5.0 },
@@ -176,20 +242,68 @@
         document.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
             document.getElementById('capture-date').innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            updateUI();
             renderLibrary(); renderRanking(); initCourtInputs();
             document.getElementById('court-count').addEventListener('change', initCourtInputs);
         });
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ko' ? 'en' : 'ko';
+            localStorage.setItem('tennis_lang', currentLang);
+            updateUI();
+            renderLibrary();
+            renderStadium();
+            initCourtInputs();
+            renderStats();
+            renderRanking();
+            if (stadium.length === 0) {
+                document.getElementById('timeline-board').innerHTML = `<div class="w-full text-center py-20 text-slate-300 font-bold uppercase text-xs">${translations[currentLang].noMatch}</div>`;
+            }
+        }
+
+        function updateUI() {
+            const t = translations[currentLang];
+            document.getElementById('lang-btn').innerText = t.lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+            document.getElementById('p-name').placeholder = t.name;
+            document.getElementById('p-gender').options[0].text = t.male;
+            document.getElementById('p-gender').options[1].text = t.female;
+            
+            // Static text translation
+            document.querySelector('h3.text-slate-400').innerText = t.playerManager;
+            document.querySelectorAll('h3')[1].innerText = t.courtStatus;
+            document.querySelector('h2.text-white').firstChild.textContent = t.participants + ' ';
+            document.querySelector('button[onclick="generateTimeline()"]').innerText = t.generate;
+            document.querySelector('h2.text-3xl.italic').innerText = t.matchSheet;
+            document.querySelector('h3.text-slate-800').innerText = t.stats;
+            document.querySelector('h3.text-blue-400').innerText = t.ranking;
+            document.querySelector('button[onclick="resetAllData()"]').innerText = t.reset;
+            
+            const courtSelect = document.getElementById('court-count');
+            for(let i=0; i<courtSelect.options.length; i++) {
+                courtSelect.options[i].text = `${i+1}${currentLang === 'ko' ? '개 코트' : ' Court' + (i > 0 ? 's' : '')}`;
+            }
+
+            const matchType = document.getElementById('match-type');
+            matchType.options[0].text = t.matchTypeGender;
+            matchType.options[1].text = t.matchTypeMixed;
+            matchType.options[2].text = t.matchTypeRandom;
+        }
 
         function saveLocal() { localStorage.setItem('tennis_v85_data', JSON.stringify(members)); }
 
         // [V8.5 핵심] 전체 대진표 이미지 저장 로직
         async function saveAsImage() {
+            const t = translations[currentLang];
             const target = document.getElementById('capture-area');
             const board = document.getElementById('timeline-board');
             
-            if (stadium.length === 0) return alert('대진표가 비어있습니다.');
+            if (stadium.length === 0) return alert(currentLang === 'ko' ? '대진표가 비어있습니다.' : 'Match sheet is empty.');
             
-            alert('전체 코트 대진표를 하나의 이미지로 생성합니다.\n잠시만 기다려주세요.');
+            alert(currentLang === 'ko' ? '전체 코트 대진표를 하나의 이미지로 생성합니다.\n잠시만 기다려주세요.' : 'Generating full match sheet image.\nPlease wait.');
 
             // 1. 임시로 가로 스크롤을 해제하고 전체를 펼침
             const originalBoardClass = board.className;
@@ -210,16 +324,16 @@
                     const link = document.createElement('a');
                     link.download = `TennisArena_FullTimeline_${Date.now()}.png`;
                     link.href = data; link.click();
-                    alert('팝업이 차단되어 이미지 다운로드를 시작합니다.');
+                    alert(currentLang === 'ko' ? '팝업이 차단되어 이미지 다운로드를 시작합니다.' : 'Popup blocked. Starting download.');
                 } else {
                     win.document.write(`<body style="margin:0; background:#333; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:sans-serif;">
-                        <p style="color:white; font-size:14px; margin-bottom:15px;">전체 코트가 포함된 이미지입니다. 길게 눌러 사진첩에 저장하세요.</p>
+                        <p style="color:white; font-size:14px; margin-bottom:15px;">${currentLang === 'ko' ? '전체 코트가 포함된 이미지입니다. 길게 눌러 사진첩에 저장하세요.' : 'Image includes all courts. Long press to save to your gallery.'}</p>
                         <img src="${data}" style="max-width:95%; max-height:80vh; border:2px solid #555; box-shadow:0 0 30px rgba(0,0,0,0.5);">
-                        <button onclick="window.close()" style="margin-top:20px; padding:12px 24px; background:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">닫기</button>
+                        <button onclick="window.close()" style="margin-top:20px; padding:12px 24px; background:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">${currentLang === 'ko' ? '닫기' : 'Close'}</button>
                     </body>`);
                 }
             } catch (e) {
-                alert('이미지 생성 중 오류가 발생했습니다.');
+                alert(currentLang === 'ko' ? '이미지 생성 중 오류가 발생했습니다.' : 'Error generating image.');
                 console.error(e);
             } finally {
                 // 2. 캡처가 끝나면 원래 레이아웃(가로 스크롤)으로 복구
@@ -227,69 +341,10 @@
             }
         }
 
-        // --- 기타 데이터 연동 로직 ---
-        function exportData() {
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(JSON.stringify(members, null, 2));
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', `TennisArena_Backup_${new Date().toLocaleDateString()}.json`);
-            linkElement.click();
-            alert('백업 파일이 생성되었습니다.');
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    members = JSON.parse(e.target.result);
-                    saveLocal(); location.reload();
-                } catch (err) { alert('파일 형식이 잘못되었습니다.'); }
-            };
-            reader.readAsText(file);
-        }
-
-        function togglePlayer(id) {
-            const idx = stadium.findIndex(m => m.id === id);
-            if (idx > -1) { stadium.splice(idx, 1); delete playerStats[id]; } 
-            else {
-                const p = members.find(m => m.id === id);
-                if (p) { stadium.push({...p}); playerStats[id] = { games: 0, wins: 0, losses: 0, ptsWon: 0, ptsLost: 0 }; }
-            }
-            renderStadium(); renderLibrary(); renderStats();
-        }
-
-        function addOrUpdatePlayer() {
-            const name = document.getElementById('p-name').value.trim();
-            const gender = document.getElementById('p-gender').value;
-            const ntpr = parseFloat(document.getElementById('p-ntpr').value);
-            if (!name) return alert('이름을 입력하세요');
-
-            if (editingId) {
-                const p = members.find(m => m.id === editingId);
-                if(p) { p.name = name; p.gender = gender; p.ntpr = ntpr; }
-                editingId = null; document.getElementById('submit-btn').innerText = "Add / Update";
-            } else { members.push({ id: Date.now(), name, gender, ntpr }); }
-            saveLocal(); renderLibrary(); renderRanking(); resetForm();
-        }
-
-        function editPlayer(id, e) {
-            if(e) e.stopPropagation();
-            const p = members.find(m => m.id === id);
-            editingId = id; document.getElementById('p-name').value = p.name;
-            document.getElementById('p-gender').value = p.gender;
-            document.getElementById('p-ntpr').value = p.ntpr;
-            document.getElementById('submit-btn').innerText = "Update Info";
-            document.getElementById('cancel-btn').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function resetForm() { editingId = null; document.getElementById('p-name').value = ''; document.getElementById('cancel-btn').classList.add('hidden'); }
-
         function renderLibrary() {
             document.getElementById('member-library').innerHTML = members.map(m => {
                 const isSelected = stadium.some(s => s.id === m.id);
+                const gender = m.gender === '남' ? translations[currentLang].male : translations[currentLang].female;
                 return `
                     <div onclick="togglePlayer(${m.id})" class="relative p-3 rounded-2xl border transition-all ${m.gender === '남' ? 'male-gradient' : 'female-gradient'} ${isSelected ? 'border-blue-600 ring-2 ring-blue-500/10' : 'border-slate-100'} shadow-sm">
                         <div class="font-bold text-[11px] truncate">${m.name} ${isSelected ? '✅' : ''}</div>
@@ -301,8 +356,8 @@
 
         function renderStadium() {
             const pool = document.getElementById('stadium-pool');
-            document.getElementById('player-count').innerText = `${stadium.length}명`;
-            if (stadium.length === 0) { pool.innerHTML = `<p class="text-slate-500 text-[11px] italic w-full text-center py-10">플레이어를 선택하세요.</p>`; return; }
+            document.getElementById('player-count').innerText = `${stadium.length}${translations[currentLang].playerCount}`;
+            if (stadium.length === 0) { pool.innerHTML = `<p class="text-slate-500 text-[11px] italic w-full text-center py-10">${currentLang === 'ko' ? '플레이어를 선택하세요.' : 'Select players.'}</p>`; return; }
             pool.innerHTML = stadium.map(m => `
                 <div class="px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg flex items-center gap-2 ${m.gender === '남' ? 'bg-blue-600 text-white' : 'bg-rose-600 text-white'}">
                     <span onclick="togglePlayer(${m.id})" class="cursor-pointer opacity-70">✕</span><span>${m.name}</span>
@@ -311,164 +366,67 @@
 
         function initCourtInputs() {
             const count = parseInt(document.getElementById('court-count').value);
+            const t = translations[currentLang];
             document.getElementById('court-config-list').innerHTML = Array.from({length: count}, (_, i) => `
                 <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-[10px] font-bold">
-                    <span class="text-slate-400 uppercase tracking-tighter">${i+1}번 코트</span>
+                    <span class="text-slate-400 uppercase tracking-tighter">${i+1}${t.court}</span>
                     <select id="court-${i+1}-start" class="bg-transparent text-blue-600 outline-none">${Array.from({length: 24}, (_, h) => `<option value="${h}" ${h===14 ? 'selected' : ''}>${h}:00</option>`).join('')}</select>
-                    <select id="court-${i+1}-duration" class="bg-transparent text-slate-500 outline-none">${Array.from({length: 6}, (_, d) => `<option value="${d+1}">${d+1}시간</option>`).join('')}</select>
+                    <select id="court-${i+1}-duration" class="bg-transparent text-slate-500 outline-none">${Array.from({length: 6}, (_, d) => `<option value="${d+1}">${d+1}${t.hour}</option>`).join('')}</select>
                 </div>`).join('');
         }
 
-        function generateTimeline() {
-            if (stadium.length < 4) return alert('4명 이상 선택하세요.');
-            const board = document.getElementById('timeline-board');
-            board.innerHTML = '';
-            const courtCount = parseInt(document.getElementById('court-count').value);
-            const matchType = document.getElementById('match-type').value;
-
-            // Tracking games played ONLY for this generation to ensure fairness
-            const tempGamesCount = {};
-            stadium.forEach(p => tempGamesCount[p.id] = 0);
-
-            // Find max slots across all courts
-            let maxSlots = 0;
-            const courtConfigs = [];
-            for (let c = 1; c <= courtCount; c++) {
-                const start = parseInt(document.getElementById(`court-${c}-start`).value);
-                const duration = parseInt(document.getElementById(`court-${c}-duration`).value);
-                const slots = duration * 2;
-                if (slots > maxSlots) maxSlots = slots;
-                courtConfigs.push({ id: c, start, slots, matches: [] });
-            }
-
-            // Generate matches slot by slot to prevent duplicates
-            for (let s = 0; s < maxSlots; s++) {
-                let assignedInSlot = new Set();
-                
-                for (let c = 0; c < courtCount; c++) {
-                    const config = courtConfigs[c];
-                    if (s < config.slots) {
-                        const players = pickPlayersForMatch(matchType, assignedInSlot, tempGamesCount);
-                        config.matches.push(players);
-                        players.forEach(p => {
-                            if (p) {
-                                assignedInSlot.add(p.id);
-                                tempGamesCount[p.id]++;
-                            }
-                        });
-                    }
-                }
-            }
-
-            // Render columns
-            courtConfigs.forEach(config => {
-                const col = document.createElement('div');
-                col.className = 'court-column space-y-4';
-                col.innerHTML = `<div class="p-4 bg-slate-900 text-white rounded-[1.8rem] shadow-xl font-black text-center text-[9px] uppercase tracking-widest">${config.id}번 코트</div>`;
-                
-                config.matches.forEach((players, s) => {
-                    const h = config.start + Math.floor(s/2);
-                    const timeStr = `${h < 10 ? '0'+h : h}:${(s%2===0 ? '00' : '30')}`;
-                    col.innerHTML += renderMatchCard(s + 1, timeStr, players);
-                });
-                board.appendChild(col);
-                col.querySelectorAll('.drag-zone').forEach(el => new Sortable(el, { group: 'tennis', animation: 200 }));
-            });
-            
-            // Note: We don't update playerStats[].games here because that's for results
-            // But we can show how many games each will play if needed.
-        }
-
-        function pickPlayersForMatch(type, assignedInSlot, tempGamesCount) {
-            // Pool consists of players NOT assigned in the current slot
-            let availablePool = stadium.filter(p => !assignedInSlot.has(p.id))
-                .sort((a, b) => tempGamesCount[a.id] - tempGamesCount[b.id] || Math.random() - 0.5);
-            
-            if (availablePool.length < 4) return [null, null, null, null];
-
-            const males = availablePool.filter(p => p.gender === '남');
-            const females = availablePool.filter(p => p.gender === '여');
-
-            const getMD = () => males.length >= 4 ? males.slice(0, 4) : null;
-            const getWD = () => females.length >= 4 ? females.slice(0, 4) : null;
-            const getXD = () => (males.length >= 2 && females.length >= 2) ? [males[0], females[0], males[1], females[1]] : null;
-
-            let result = null;
-
-            if (type === 'gender') {
-                // Prioritize Same-Sex (MD/WD)
-                result = getMD() || getWD() || getXD();
-            } else if (type === 'mixed') {
-                // Prioritize Mixed (2M2F)
-                result = getXD() || getMD() || getWD();
-            } else {
-                // Random/Fallback
-                result = getXD() || getMD() || getWD();
-            }
-
-            return result || [null, null, null, null];
-        }
-
         function renderMatchCard(round, time, p) {
+            const t = translations[currentLang];
             return `
                 <div class="match-card glass-card p-5 rounded-[2.2rem] border-t-8 border-slate-800 shadow-sm">
                     <div class="flex justify-between items-center mb-4 text-[9px] font-black"><span class="text-slate-400 font-mono italic">ROUND ${round}</span><span class="text-blue-600 font-mono font-black">${time}</span></div>
                     <div class="space-y-3"><div class="drag-zone space-y-1">${renderPlayerMini(p[0])} ${renderPlayerMini(p[1])}</div><div class="text-center text-[7px] font-black text-slate-200 tracking-[0.5em]">VS</div><div class="drag-zone space-y-1">${renderPlayerMini(p[2])} ${renderPlayerMini(p[3])}</div></div>
                     <div class="mt-5 flex items-center justify-between gap-1.5 bg-slate-50 p-3 rounded-2xl">
                         <input type="number" class="score-input score-a" placeholder="0"><input type="number" class="score-input score-b" placeholder="0">
-                        <button onclick="confirmResult(this)" class="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-[9px] font-black active:scale-95 shadow-md uppercase">Save</button>
+                        <button onclick="confirmResult(this)" class="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-[9px] font-black active:scale-95 shadow-md uppercase">${t.save}</button>
                     </div>
                 </div>`;
         }
 
         function renderPlayerMini(p) {
-            if (!p) return `<div class="p-3 bg-white/50 border border-dashed rounded-xl text-[8px] text-center text-slate-300">Wait</div>`;
+            if (!p) return `<div class="p-3 bg-white/50 border border-dashed rounded-xl text-[8px] text-center text-slate-300">${translations[currentLang].wait}</div>`;
             return `<div class="p-3 rounded-xl shadow-sm text-[10px] font-black flex justify-between items-center cursor-move ${p.gender === '남' ? 'male-gradient' : 'female-gradient'}" data-id="${p.id}"><span>${p.name}</span><span class="text-[7px] opacity-40 font-mono">${p.ntpr.toFixed(2)}</span></div>`;
         }
 
-            function confirmResult(btn) {
-                const card = btn.closest('.match-card'), sa = parseInt(card.querySelector('.score-a').value), sb = parseInt(card.querySelector('.score-b').value);
-                if (isNaN(sa) || isNaN(sb)) return alert('점수를 입력하세요.');
-                const p = card.querySelectorAll('[data-id]'), tA = [p[0].dataset.id, p[1].dataset.id], tB = [p[2].dataset.id, p[3].dataset.id];
-                [...tA].forEach(id => { 
-                    playerStats[id].games++;
-                    playerStats[id].ptsWon += sa; 
-                    playerStats[id].ptsLost += sb; 
-                    if(sa>sb) playerStats[id].wins++; else if(sb>sa) playerStats[id].losses++; 
-                });
-                [...tB].forEach(id => { 
-                    playerStats[id].games++;
-                    playerStats[id].ptsWon += sb; 
-                    playerStats[id].ptsLost += sa; 
-                    if(sb>sa) playerStats[id].wins++; else if(sa>sb) playerStats[id].losses++; 
-                });
-                sa > sb ? applyNtpr(tA, 0.1) : (sb > sa ? applyNtpr(tB, 0.1) : null); 
-                card.classList.add('match-finished'); btn.innerHTML = 'DONE ✓'; saveLocal(); renderStats(); renderRanking(); renderLibrary();
-            }
-                function applyNtpr(ids, change) { ids.forEach(id => { const m = members.find(m => m.id == id); if (m) m.ntpr = Math.min(7.0, m.ntpr + change); }); }
+        function confirmResult(btn) {
+            const card = btn.closest('.match-card'), sa = parseInt(card.querySelector('.score-a').value), sb = parseInt(card.querySelector('.score-b').value);
+            if (isNaN(sa) || isNaN(sb)) return alert(currentLang === 'ko' ? '점수를 입력하세요.' : 'Please enter scores.');
+            const p = card.querySelectorAll('[data-id]'), tA = [p[0].dataset.id, p[1].dataset.id], tB = [p[2].dataset.id, p[3].dataset.id];
+            [...tA].forEach(id => { 
+                playerStats[id].games++;
+                playerStats[id].ptsWon += sa; 
+                playerStats[id].ptsLost += sb; 
+                if(sa>sb) playerStats[id].wins++; else if(sb>sa) playerStats[id].losses++; 
+            });
+            [...tB].forEach(id => { 
+                playerStats[id].games++;
+                playerStats[id].ptsWon += sb; 
+                playerStats[id].ptsLost += sa; 
+                if(sb>sa) playerStats[id].wins++; else if(sa>sb) playerStats[id].losses++; 
+            });
+            sa > sb ? applyNtpr(tA, 0.1) : (sb > sa ? applyNtpr(tB, 0.1) : null); 
+            card.classList.add('match-finished'); btn.innerHTML = translations[currentLang].done; saveLocal(); renderStats(); renderRanking(); renderLibrary();
+        }
 
         function renderStats() {
+            const t = translations[currentLang];
             document.getElementById('stat-grid').innerHTML = stadium.map(m => {
-                const s = playerStats[m.id], d = s.ptsWon - s.ptsLost;
+                const s = playerStats[m.id], d = (s.ptsWon || 0) - (s.ptsLost || 0);
                 return `<div class="bg-white p-4 rounded-3xl border-l-8 ${m.gender === '남' ? 'border-l-blue-500' : 'border-l-rose-500'} shadow-sm flex flex-col gap-2">
-                    <div class="flex justify-between items-center font-black"><span class="text-slate-800 text-xs">${m.name}</span><span class="text-[8px] text-slate-400 italic">${s.games}G Played</span></div>
-                    <div class="grid grid-cols-2 gap-2 text-[10px] font-bold"><div class="bg-slate-50 p-2 rounded-xl text-center font-black italic">${s.wins}W ${s.losses}L</div><div class="bg-slate-50 p-2 rounded-xl text-center font-black italic">${s.ptsWon}:${s.ptsLost} (${d>=0?'+':''}${d})</div></div>
+                    <div class="flex justify-between items-center font-black"><span class="text-slate-800 text-xs">${m.name}</span><span class="text-[8px] text-slate-400 italic">${s.games || 0} ${t.played}</span></div>
+                    <div class="grid grid-cols-2 gap-2 text-[10px] font-bold"><div class="bg-slate-50 p-2 rounded-xl text-center font-black italic">${s.wins || 0}W ${s.losses || 0}L</div><div class="bg-slate-50 p-2 rounded-xl text-center font-black italic">${s.ptsWon || 0}:${s.ptsLost || 0} (${d>=0?'+':''}${d})</div></div>
                 </div>`;
             }).join('');
         }
 
-        function renderRanking() {
-            document.getElementById('ranking-list').innerHTML = [...members].sort((a,b)=>b.ntpr-a.ntpr).map((m,i)=>`
-                <div class="flex items-center justify-between p-3 rounded-2xl ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'bg-white/5 border border-white/10 shadow-sm'}">
-                    <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black tracking-tighter">${m.ntpr.toFixed(2)}</span>
-                </div>`).join('');
-        }
-
-        function resetAllData() { if(confirm('모든 데이터를 초기화할까요?')) { localStorage.clear(); location.reload(); } }
-        
         function copyToClipboard() {
-            if (stadium.length === 0) return alert('대진표가 없습니다.');
-            let text = `🎾 [UBUNTU 매칭시스템 대진표]\n`;
+            if (stadium.length === 0) return alert(currentLang === 'ko' ? '대진표가 없습니다.' : 'No matches found.');
+            let text = `🎾 [UBUNTU ${translations[currentLang].matchSheet}]\n`;
             document.querySelectorAll('.court-column').forEach(col => {
                 text += `\n📍 ${col.firstChild.innerText}\n`;
                 col.querySelectorAll('.match-card').forEach(card => {
@@ -479,7 +437,7 @@
             });
             const textarea = document.createElement("textarea");
             textarea.value = text; document.body.appendChild(textarea);
-            textarea.select(); try { document.execCommand('copy'); alert('카톡용 복사 완료!'); } catch(e) { alert('복사 실패'); }
+            textarea.select(); try { document.execCommand('copy'); alert(currentLang === 'ko' ? '복사 완료!' : 'Copied to clipboard!'); } catch(e) { alert('Fail'); }
             document.body.removeChild(textarea);
         }
     </script>
