@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SAMPLE] 협회별 테니스 규칙 가이드 - UBUNTU TENNIS</title>
+    <link href="./dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .association-card { transition: all 0.3s ease; border: 1px solid transparent; }
+        .association-card:hover { border-color: #3b82f6; transform: translateY(-5px); background-color: #ffffff; }
+        .prose h2 { margin-top: 3rem; margin-bottom: 1.5rem; font-weight: 900; font-size: 1.875rem; color: #0f172a; }
+        .prose p { margin-bottom: 1.25rem; line-height: 1.8; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 9999px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Sample Page Warning Bar -->
+    <div class="bg-blue-600 text-white text-[10px] font-bold py-2 text-center uppercase tracking-widest">
+        This is a Sample Prototype Page - Not Integrated Yet
+    </div>
+
+    <!-- Simple Nav -->
+    <nav class="bg-white border-b border-slate-200 py-4 px-6">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="./index.html" class="text-xl font-black italic tracking-tighter text-slate-900">
+                UBUNTU <span class="text-blue-600">TENNIS</span>
+            </a>
+            <a href="./index.html" class="text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors">← Back to Blog</a>
+        </div>
+    </nav>
+
+    <!-- Post Header -->
+    <header class="py-20 px-4 bg-white">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight uppercase italic">
+                세계 테니스 협회별 <br><span class="text-blue-600">핵심 규칙</span> 비교 가이드
+            </h1>
+            <p class="text-lg text-slate-500 font-medium">KTA부터 ITF까지, 당신이 참여하는 대회에 따라 규칙이 달라질 수 있습니다.</p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-16">
+        
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+            <div class="association-card p-8 rounded-[2rem] bg-slate-50 shadow-sm">
+                <span class="badge bg-blue-100 text-blue-600">KTA</span>
+                <h3 class="text-xl font-bold mb-3">대한테니스협회</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">한국 동호인 랭킹 시스템과 국내 모임의 표준이 되는 규정을 제공합니다.</p>
+            </div>
+            <div class="association-card p-8 rounded-[2rem] bg-slate-50 shadow-sm">
+                <span class="badge bg-emerald-100 text-emerald-600">ITF</span>
+                <h3 class="text-xl font-bold mb-3">국제테니스연맹</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">전 세계 공통의 코트 규격, 볼 압력, 공식 경기 진행 방식을 결정합니다.</p>
+            </div>
+            <div class="association-card p-8 rounded-[2rem] bg-orange-100/50 shadow-sm">
+                <span class="badge bg-orange-100 text-orange-600">USTA</span>
+                <h3 class="text-xl font-bold mb-3">미국테니스협회</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">심판 없는 경기에서의 매너 규정인 'The Code'로 유명합니다.</p>
+            </div>
+        </div>
+
+        <!-- Detailed Content -->
+        <article class="max-w-3xl mx-auto prose prose-slate lg:prose-lg">
+            
+            <section id="kta">
+                <h2>1. KTA: 한국 동호인 테니스의 표준</h2>
+                <p>
+                    대한테니스협회(KTA) 규칙은 국내에서 열리는 대부분의 동호회 대회(개나리부, 국화부, 신인부 등)의 기준이 됩니다. 가장 특징적인 점은 <strong>'동호인 등급제'</strong>입니다.
+                </p>
+                <ul>
+                    <li><strong>부서제도:</strong> 실력과 경력에 따라 엄격하게 부서를 나누어 경기 수준의 균형을 맞춥니다.</li>
+                    <li><strong>로컬 에티켓:</strong> 대회 중 파트너 교체 규정이나 우승자 승급 제한 등 한국적인 동호회 문화를 반영한 세부 규칙이 많습니다.</li>
+                </ul>
+            </section>
+
+            <section id="itf" class="mt-20">
+                <h2>2. ITF: 글로벌 공식 룰의 수호자</h2>
+                <p>
+                    국제테니스연맹(ITF)은 테니스의 '헌법'을 만드는 곳입니다. 우리가 아는 테니스의 모든 물리적 수치는 여기서 결정됩니다.
+                </p>
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm my-8">
+                    <h4 class="font-bold text-blue-600 mb-2">ITF 공식 규격 예시</h4>
+                    <ul class="text-sm space-y-2 text-slate-600">
+                        <li><strong>코트 길이:</strong> 23.77m (78피트)</li>
+                        <li><strong>네트 높이:</strong> 중앙 기준 0.914m (3피트)</li>
+                        <li><strong>볼 바운드:</strong> 254cm 높이에서 떨어뜨렸을 때 135~147cm 리바운드</li>
+                    </ul>
+                </div>
+                <p>
+                    최근 ITF는 경기 시간 단축을 위해 '숏 세트(4게임 승리)'나 '매치 타이브레이크(10점제)' 도입을 적극적으로 실험하고 있습니다.
+                </p>
+            </section>
+
+            <section id="usta" class="mt-20">
+                <h2>3. USTA: 'The Code'와 매너</h2>
+                <p>
+                    미국테니스협회(USTA) 규칙 중 가장 존경받는 부분은 <strong>'The Code'</strong>입니다. 이는 심판이 없는 경기(Unofficiated Matches)에서 선수들이 스스로 분쟁을 해결하는 가이드라인입니다.
+                </p>
+                <blockquote>
+                    "의심스러운 판정은 상대방에게 유리하게 하라. 그것이 테니스의 본질이다."
+                </blockquote>
+                <p>
+                    USTA는 주니어 선수들을 위해 나이별로 공의 압력(레드볼, 오렌지볼, 그린볼)을 다르게 하는 등 교육적인 시스템 구축에 강점이 있습니다.
+                </p>
+            </section>
+
+            <!-- CTA -->
+            <div class="mt-32 p-12 bg-slate-900 rounded-[3rem] text-center text-white">
+                <h3 class="text-2xl font-black mb-4 italic uppercase">이 샘플 페이지가 마음에 드시나요?</h3>
+                <p class="text-slate-400 mb-8">내용이 마음에 들면 메인 'Rules' 메뉴에 이 깊이 있는 정보를 통합할 수 있습니다.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="bg-blue-600 px-8 py-3 rounded-xl font-bold hover:bg-blue-500 transition-all">통합하기</button>
+                    <button class="bg-slate-800 px-8 py-3 rounded-xl font-bold hover:bg-slate-700 transition-all">수정 요청하기</button>
+                </div>
+            </div>
+
+        </article>
+    </main>
+
+    <footer class="py-12 border-t border-slate-200 text-center">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">© 2026 UBUNTU TENNIS SAMPLE PROTOTYPE</p>
+    </footer>
+
+</body>
+</html>
