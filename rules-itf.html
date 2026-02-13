@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITF 국제 테니스 공식 경기 규칙 - UBUNTU TENNIS</title>
+    <link href="./dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1e293b; }
+        .prose h2 { margin-top: 4rem; margin-bottom: 1.5rem; font-weight: 900; font-size: 2.25rem; color: #0f172a; border-left: 6px solid #2563eb; padding-left: 1.5rem; }
+        .spec-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1.5rem; padding: 2.5rem; margin: 3rem 0; }
+        .spec-box h4 { font-weight: 800; color: #2563eb; margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1em; }
+    </style>
+</head>
+<body class="antialiased">
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6">
+        <div class="max-w-6xl mx-auto h-16 flex justify-between items-center">
+            <a href="./index.html" class="text-xl font-black italic tracking-tighter text-slate-900 uppercase">UBUNTU <span class="text-blue-600">TENNIS</span></a>
+            <div class="flex gap-6 text-xs font-bold uppercase tracking-widest text-slate-500">
+                <a href="./index.html" class="hover:text-blue-600">Blog</a>
+                <a href="./rules-kato.html" class="hover:text-blue-600">KATO</a>
+                <a href="./rules-kata.html" class="hover:text-blue-600">KATA</a>
+                <a href="./rules-kta.html" class="hover:text-blue-600">KTA</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-24">
+        <article class="prose max-w-none">
+            <header class="text-center mb-24">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest mb-6">Global Standard</span>
+                <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-8 tracking-tighter leading-tight uppercase italic">International <br><span class="text-blue-600">Rules of Tennis</span></h1>
+                <p class="text-xl text-slate-500 font-medium max-w-2xl mx-auto">국제테니스연맹(ITF)이 규정하는 테니스의 표준 경기 방식과 기술적 규격입니다.</p>
+            </header>
+
+            <section id="court">
+                <h2>1. 코트 및 장비 규격</h2>
+                <p>테니스 경기가 이루어지는 공간과 사용되는 도구는 엄격한 물리적 수치를 준수해야 합니다.</p>
+                <div class="spec-box grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div>
+                        <h4>Court Dimensions</h4>
+                        <ul class="text-sm space-y-3 text-slate-600">
+                            <li><strong>전장 (Total Length):</strong> 23.77m (78ft)</li>
+                            <li><strong>단식폭 (Singles Width):</strong> 8.23m (27ft)</li>
+                            <li><strong>복식폭 (Doubles Width):</strong> 10.97m (36ft)</li>
+                            <li><strong>네트 높이:</strong> 중앙 기준 0.914m (3ft)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Ball Specifications</h4>
+                        <ul class="text-sm space-y-3 text-slate-600">
+                            <li><strong>무게 (Weight):</strong> 56.0g ~ 59.4g</li>
+                            <li><strong>크기 (Diameter):</strong> 6.54cm ~ 6.86cm</li>
+                            <li><strong>리바운드 (Rebound):</strong> 254cm 높이 투하 시 135~147cm 반등</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="scoring" class="mt-32">
+                <h2>2. 스코어링 시스템 (Scoring)</h2>
+                <p>테니스의 점수 산정 방식은 '포인트-게임-세트-매치'의 계층 구조를 가집니다.</p>
+                <div class="info-card bg-slate-50 border-slate-200 p-8 rounded-3xl">
+                    <h4 class="font-black text-slate-900 mb-4">포인트의 호칭</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"><span class="block text-blue-600 font-black">0 Pt</span>Love</div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"><span class="block text-blue-600 font-black">1 Pt</span>15 (Fifteen)</div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"><span class="block text-blue-600 font-black">2 Pts</span>30 (Thirty)</div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm"><span class="block text-blue-600 font-black">3 Pts</span>40 (Forty)</div>
+                    </div>
+                </div>
+                <p class="mt-8">양 선수가 3포인트씩 득점하면 **듀스(Deuce)**가 되며, 이후 2포인트 차이가 날 때까지 경기를 진행합니다. 6게임을 먼저 따면 세트를 획득하지만, 게임 스코어 5-5에서는 7-5로 승리하거나 6-6에서 타이브레이크를 거쳐야 합니다.</p>
+            </section>
+
+            <section id="service" class="mt-32">
+                <h2>3. 서브 및 리시브 (Service)</h2>
+                <ul class="list-disc pl-6 space-y-4 text-slate-600">
+                    <li><strong>서브 위치:</strong> 서버는 베이스라인 뒤쪽, 센터 마크와 사이드라인 연장선 사이에서 대각선 반대편 서비스 박스로 공을 보내야 합니다.</li>
+                    <li><strong>풋 폴트 (Foot Fault):</strong> 공을 타격하기 전 발이 베이스라인을 밟거나 코트 안으로 들어가면 실책 처리됩니다.</li>
+                    <li><strong>렛 (Let):</strong> 서브한 공이 네트를 맞고 유효한 서비스 박스에 들어가면 다시 서브를 넣습니다.</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer class="bg-slate-900 text-white py-20 text-center">
+        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Official ITF Standards • 2026 Archive</p>
+    </footer>
+</body>
+</html>
