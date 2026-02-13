@@ -7,12 +7,14 @@
     <link href="./dist/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1e293b; }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1e293b; line-height: 1.6; }
         .prose h2 { margin-top: 4rem; margin-bottom: 1.5rem; font-weight: 900; font-size: 2rem; color: #0f172a; border-left: 6px solid #0d9488; padding-left: 1.5rem; }
         .rule-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; border: 1px solid #e2e8f0; }
-        .rule-table th, .rule-table td { padding: 1rem; border: 1px solid #e2e8f0; text-align: left; }
-        .rule-table th { background: #f8fafc; font-weight: 800; text-align: center; }
+        .rule-table th, .rule-table td { padding: 1rem; border: 1px solid #e2e8f0; text-align: left; vertical-align: middle; }
+        .rule-table th { background: #f8fafc; font-weight: 800; text-align: center; color: #475569; }
         .info-card { background: #f0fdfa; border: 1px solid #ccfbf1; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; }
+        .text-literal { white-space: pre-wrap; word-break: break-all; }
+        .section-divider { border-top: 2px solid #f1f5f9; margin: 4rem 0; }
     </style>
 </head>
 <body class="antialiased">
@@ -23,69 +25,334 @@
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-6 py-20">
+    <main class="max-w-5xl mx-auto px-6 py-20">
         <article class="prose max-w-none">
             <header class="text-center mb-20">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-teal-100 text-teal-700 text-[10px] font-black uppercase tracking-widest mb-6">KATO Official</span>
-                <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 uppercase italic">한국동호인테니스연맹 규정집</h1>
-                <p class="text-slate-500">2024년 최신 개정안 및 출전자격, 랭킹 시스템 원문입니다.</p>
+                <span class="inline-block px-4 py-1.5 rounded-full bg-teal-100 text-teal-700 text-[10px] font-black uppercase tracking-widest mb-6">KATO Official Rulebook</span>
+                <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 uppercase italic tracking-tighter">한국동호인테니스연맹 규정</h1>
+                <p class="text-slate-500">제공된 공식 규정 원문을 그대로 수록하였습니다.</p>
             </header>
 
-            <div class="bg-slate-900 text-white p-8 rounded-3xl mb-12">
-                <h4 class="text-teal-400 font-black mb-4">◈ 2024년 랭킹규정변경안 (2024.03.01 시행)</h4>
-                <p class="text-sm leading-loose opacity-80">KTA와 우승 실적 상호 인정, KATA 실적 불인정(23.1.1 이후), 입상 4회 시 우승자 승격 규정 부활 등 핵심 변경 사항을 확인하세요.</p>
-            </div>
+            <section id="kato-rules-main">
+                <div class="text-center font-black text-xl mb-10 text-teal-700">
+                    ◈ 2024년 랭킹규정변경안 (2024년 3월 1일 시행) ◈
+                </div>
 
-            <section id="eligibility">
-                <h2>출전자격규정</h2>
-                <p>남자부서 및 여자부서의 만 나이 출생년도 기준 상세표입니다.</p>
+                <div class="info-card">
+                    <p class="mb-4">1) KATO(한국테니스발전협의회)와 KTA(대한테니스협회) <br>
+                    KTA와 KATO 두단체 간 우승,입상 인정 공유하며, 2023.05.15 이후 상벌징계사항도 공유합니다.<br>
+                    <span class="text-red-600">◈ 2023년 1월1일 이후 KATA(한국동호인테니스협회) 전부서 우승 및 입상에 대해 인정하지 않는다. ◈</span></p>
+                    
+                    <p class="mb-4">2) 그동안 KATO와 KATA 두단체가 선수윤리위반에 따른 상벌공유는 금일부로 파기한다.<br>
+                    단. KATO 자체 징계는 유효함.<br>
+                    * 1항과 2항은 2023. 03. 16 공지 기 시행중 (23. 1. 1. 자로 소급적용)</p>
+                    
+                    <p>3) 입상횟수로 우승자인정 규정 부활. 23년 5월15일부터 입상횟수 소급적용되며, <br>
+                    각 출전부서별로 KATO, KTA 합산 입상4회면 우승자가 된다.</p>
+                </div>
+
+                <h2 id="eligibility">출전자격규정</h2>
+                
+                <h3 class="text-lg font-black mb-4">출전나이 상세표</h3>
+                <p class="font-bold">* 남자부서 공통사항 (만 나이 출생년도 기준으로 변경)</p>
                 <div class="overflow-x-auto">
                     <table class="rule-table">
                         <thead>
                             <tr><th>구분</th><th>청년부</th><th>장년부</th><th>베테랑부</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td>순수동호인</td><td>20세 이상</td><td>40세 이상</td><td>50세 이상</td></tr>
-                            <tr><td>초등선출/지도자</td><td>35세 이상</td><td>45세 이상</td><td>55세 이상</td></tr>
-                            <tr><td>중학교 선출</td><td>40세 이상</td><td>50세 이상</td><td>60세 이상</td></tr>
-                            <tr><td>고교이상 선출</td><td>50세 이상</td><td>60세 이상</td><td>65세 이상</td></tr>
+                            <tr>
+                                <td class="font-bold">순수동호인</td>
+                                <td>주민등록상 20세 이상</td>
+                                <td>주민등록상 40세 이상</td>
+                                <td>주민등록상 50세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">초등학교 (연식포함) 선수출신, 일반지도자</td>
+                                <td>주민등록상 35세 이상</td>
+                                <td>주민등록상 45세 이상</td>
+                                <td>주민등록상 55세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">중학교 (연식포함) 선수출신</td>
+                                <td>주민등록상 40세 이상</td>
+                                <td>주민등록상 50세 이상</td>
+                                <td>주민등록상 60세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">고등학교 (연식포함) 선수출신</td>
+                                <td>주민등록상 45세 이상</td>
+                                <td>주민등록상 55세 이상</td>
+                                <td>주민등록상 65세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">대학, 실업, 국가대표 (연식제외) 선수출신</td>
+                                <td>주민등록상 50세 이상</td>
+                                <td>주민등록상 60세 이상</td>
+                                <td>주민등록상 65세 이상</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <!-- ... (KATO 상세 내용 원문 그대로 유지) ... -->
+                <p class="text-xs text-slate-400 mt-2 mb-10">* 여자 선수 출신 오픈부 참가 시 [ 만 20세 이상 청년부 / 만 40세 이상 장년부 ] 출전 가능</p>
+
+                <p class="font-bold">* 여자부서 공통사항 ( 만 나이 출생년도 기준으로 변경) 2025년 기준.</p>
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead>
+                            <tr><th>구분</th><th>국화부</th><th>개나리부</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">순수동호인</td>
+                                <td>랭킹대회 개나리부 우승자</td>
+                                <td>주민등록상 20세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">초등학교 연식정구출신</td>
+                                <td>주민등록상 41세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">일반지도자, 초등학교선수출신</td>
+                                <td>주민등록상 45세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">중학교 연식정구출신</td>
+                                <td>주민등록상 46세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">중학교 선수출신</td>
+                                <td>주민등록상 50세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">고등학교이상 연식정구출신</td>
+                                <td>주민등록상 51세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">고등학교 선수출신이상</td>
+                                <td>주민등록상 55세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="info-card">
-                    <h5>공통사항</h5>
+                    <h5 class="font-black mb-4">공통사항</h5>
                     <ul class="text-sm space-y-2">
-                        <li>* 아르바이트지도자출신은 1회우승자 신분이며, 우승시 슈퍼로본다.</li>
-                        <li>* 국화부 슈퍼급이 지도자 활동 시 9점(선수출신)으로 간주합니다.</li>
+                        <li>* 아르바이트지도자출신은 1회우승자 신분이며, 우승시 슈퍼로본다 반대로 동호인 우승자가 아르바이트지도자가 되는 순간 슈퍼급으로 본다</li>
+                        <li>* 자영업자가 아르바이트 레슨을 하는 경우 일반지도자로 간주한다.</li>
                     </ul>
                 </div>
-            </section>
 
-            <section id="ranking" class="mt-20">
-                <h2>랭킹규정 및 포인트</h2>
-                <p>대회 등급별 획득 포인트 및 랭킹 관리 규정입니다.</p>
-                <table class="rule-table text-center">
-                    <thead><tr><th>GRADE</th><th>1위</th><th>2위</th><th>4강</th><th>8강</th></tr></thead>
-                    <tbody>
-                        <tr><td class="font-bold">GM (우승자오픈)</td><td>240</td><td>180</td><td>120</td><td>50</td></tr>
-                        <tr><td class="font-bold">MA (마스터스)</td><td>200</td><td>140</td><td>90</td><td>40</td></tr>
-                    </tbody>
-                </table>
-            </section>
+                <h3 class="mt-16 mb-4">개나리부</h3>
+                <p class="font-bold text-sm">* 공통사항</p>
+                <ul class="text-sm space-y-1 mb-10">
+                    <li>A) 비우승자 출전 종목</li>
+                    <li>B) 만 20세 이상 출전 가능</li>
+                    <li>C) KATA 개나리부 우승자 분리출전</li>
+                    <li>C) 여자부타단체 (KTA포함) 모든 부서 우승자 출전 불가</li>
+                </ul>
 
-            <section id="ethics" class="mt-20">
-                <h2>선수윤리규정</h2>
+                <h3 class="mb-4">국화부</h3>
+                <p class="font-bold text-sm">* 공통사항</p>
+                <ol class="text-sm space-y-2 mb-8">
+                    <li>1. 만 60세 이상 연령 해제자는 우승 또는 입상 후 즉시 본래 등급으로 환원되며. 매년 1월 1일에 한 단계 하향 조정된다.</li>
+                    <li>2. 합산 10점 이하로 파트너 페어 하여야 한다.</li>
+                    <li>3. 국화부 슈퍼급이 아르바이트 포함 지도자 활동시. ▶9점(선수출신)으로 본다. 국화부 1회~4회 우승자 아르바이트 포함 지도자 활동시.▶ 8점(동호인 슈퍼급) 으로 본다. 국화부 비 우승자가 아르바이트 포함 지도자활동시.▶ 1회 우승자로보며,이후 우승시8점(동호인 슈퍼급)으로 본다.</li>
+                    <li>4. 23년 5월 15일 이후 타 단체 (KTA)포함 입상 횟수 4회마다 우승 횟수 인정.</li>
+                    <li>5. 연식선수출신의 출전나이를 1년씩 순차적으로 올려 2029년부터는 초등테니스선수출신과 동일하게 적용한다.<br>
+                    --> 초등선출 : 25년 41세, 26년 42세, 27년 43세, 28년 44세, 29년 45세부터 출전.<br>
+                    --> 중등선출 : 25년 46세, 26년 47세, 27년 48세, 28년 49세, 29년 50세부터 출전.<br>
+                    --> 고등선출 : 25년 51세, 26년 52세, 27년 53세, 28년 54세, 29년 55세부터 출전.</li>
+                    <li>6. KATA 우승 및 입상성적은 인정하지 않으나 페어점수에는 반영함(23년1월1일 소급적용)</li>
+                </ol>
+
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead><tr><th>점 수</th><th>대 상 자</th></tr></thead>
+                        <tbody>
+                            <tr><td class="text-center font-black">9</td><td>1) 테니스 선수출신 (초등학교 만 45세, 중학교 만 50세, 고등학교 이상 만 55세) 2) 연식정구 선수출신 (초등학교 만 41세, 중학교 만 46세, 고등학교 이상 만 51세)(2025년기준)</td></tr>
+                            <tr><td class="text-center font-black">8</td><td>동호인 슈퍼급</td></tr>
+                            <tr><td class="text-center font-black">7</td><td>3 ~ 4회 우승자, 만 60세 이상 동호인 슈퍼급</td></tr>
+                            <tr><td class="text-center font-black">6</td><td>2회 우승자, 만60세 이상 4회우승자</td></tr>
+                            <tr><td class="text-center font-black">5</td><td>1회 우승자, 만60세 이상 3회우승자</td></tr>
+                            <tr><td class="text-center font-black">4</td><td>1) 만60세 이상 1~2회우승자 2) 연도 해제자, KATA우승자(23년1월1일이후 우승자)</td></tr>
+                            <tr><td class="text-center font-black">3</td><td>2회 이상 입상자 (KTA, KATA 포함),(23년1월1일부터 소급적용)</td></tr>
+                            <tr><td class="text-center font-black">2</td><td>1회 입상자 (KTA, KATA 포함),(23년1월1일부터 소급적용)</td></tr>
+                            <tr><td class="text-center font-black">1</td><td>비입상자 (KTA, KATA 포함),(23년1월1일부터 소급적용)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-2xl border text-xs text-slate-500 mt-4 mb-10">
+                    <p>변경 ● 23.5.15 이전 타단체 입상횟수로 우승자신분이 된 자는비우승자로 본다.(우승횟수 제외) --> 23.5.15이후KATO, KTA 입상횟수 4회면 우승횟수 포함.</p>
+                    <p>● 단, 선수출신은 (KTA,KATA 포함) 순수비입상자와페어가능하며, 슈퍼급은 (KTA,KATA 포함) 1회 입상자까지 페어할수 있다.(2018년입상부터 적용됨)</p>
+                </div>
+
+                <h3 class="mb-4">챌린저부</h3>
+                <p class="font-bold text-sm">* 공통사항</p>
+                <ul class="text-sm space-y-1 mb-10">
+                    <li>A) 비우승자 출전 종목</li>
+                    <li>B) 만 20세 이상 출전 가능</li>
+                    <li>C) 남자부 (타단체 포함) 모든 부서 우승자 출전 불가.</li>
+                    <li>D) 타단체(KTA)포함 입상횟수 4회면 우승자신분. 이후 챌린저부 출전불가</li>
+                </ul>
+
+                <h3 class="mb-4">마스터스부</h3>
+                <p class="font-bold text-sm">* 공통사항</p>
+                <ul class="text-sm space-y-2 mb-8">
+                    <li>A) 6점 이상인자는 기본 청년 + 장년, 장년 + 장년, 청년(장년/베테랑) + 베테랑으로 페어하여야 한다. (청년 + 청년 페어불가)</li>
+                    <li>B} 합산 11점 이하로 파트너 페어하여야 한다.</li>
+                    <li>C) 만 60세 이상자는매년 1월1일 1등급 하향 조정 됨. 우승 또는 입상시 즉시 본래 등급으로 환원되며,익년1월1일부터 한등급 하향조정된다.. (단 슈퍼급끼리 페어불가)</li>
+                    <li>D) 23년 5월15일이후 KATO,KTA 포함 입상횟수 4회마다 우승횟수 인정.</li>
+                    <li>E) 23년 1월 1일이후 KATA 우승자 불인정함.</li>
+                    <li>F) 챌린저부 입상자는 마스터스부 비입상자로 본다</li>
+                </ul>
+
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead><tr><th>점 수</th><th>대 상 자</th></tr></thead>
+                        <tbody>
+                            <tr><td class="text-center font-black">10</td><td>선수출신 (초등학교 만 35세, 중학교 만 40세, 고등학교 만 45세, 대학/실업 만 50세)</td></tr>
+                            <tr><td class="text-center font-black">9</td><td>1) 일반 지도자(우승자), 만 55세 이상 선수출신 2) 만 20세 이상 여자 선수출신</td></tr>
+                            <tr><td class="text-center font-black">8</td><td>1) 일반 지도자 중 비우승자, 만 50세 미만 동호인 슈퍼급, 만 55세 이상 일반 지도자 우승자 2) 만 40세 이상 여자 선수출신</td></tr>
+                            <tr><td class="text-center font-black">7</td><td>1) 3 ~ 4회 우승자, 만 55세 이상 일반 지도자 중 비우승자 2) 만 50세 이상 슈퍼급</td></tr>
+                            <tr><td class="text-center font-black">6</td><td>1) 만 55세 이상 슈퍼급 ( 개정 : 5점의 1회 우승자까지만 페어가능 / 2회 우승자와는 페어불가) 2) 만 50세 이상 3 ~ 4회 우승자</td></tr>
+                            <tr><td class="text-center font-black">5</td><td>1 ~ 2회 우승자 (1회 + 1회 = 청년 + 청년 가능, 1회 + 2회 = 청년 + 장년 가능, 2회 + 2회 = 합산연령 만 90세 이상 가능)</td></tr>
+                            <tr><td class="text-center font-black">4</td><td>1) 만 50세 미만 우승 연도 해제자 (만 3년, 신인부 우승 제외) 2) 만 50세 이상 2회 우승자 3) 만 55세 이상 3 ~ 4회 우승자</td></tr>
+                            <tr><td class="text-center font-black">3</td><td>1) 만 55세 이상 1 ~ 2회 우승자 2) 만 50세 이상 1회 우승자 및 우승 연도 해제자 3) 만 50세 미만 신인부 우승자 (연도해제 없음)</td></tr>
+                            <tr><td class="text-center font-black">2</td><td>1) 비우승자 2) 만 50세 이상 신인부 우승자 (연도해제 없음)</td></tr>
+                            <tr><td class="text-center font-black">1</td><td>만 45세 이상 비입상자 (2018이전 입상 KTA 포함) (챌린저부 입상자는 마스터스부 비입상자로 본다.)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="mt-16 mb-4">베테랑부</h3>
+                <p class="font-bold text-sm">* 공통사항</p>
+                <ul class="text-sm space-y-2 mb-8">
+                    <li>A) 합산 9점 이하로 파트너 페어하여야 한다.</li>
+                    <li>B) 베테랑부 페어 나이조정<br>
+                    1) 비우승자페어 : 합산 100세 (50+50)부터 출전가능<br>
+                    2) 합산 2회 우승 이상 페어는 만 105세 이상, 합산 3회 이상 우승은 만 107세 이상 페어하여야 한다.<br>
+                    3) 선수출신(연식포함) 페어 :초등선출 페어는 만115세 이상, 중등선출페어는 만120세 이상 페어하여야 한다.</li>
+                </ul>
+
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead><tr><th>점수</th><th>대상자</th></tr></thead>
+                        <tbody>
+                            <tr><td class="text-center font-black">8</td><td>선수출신 (초등학교 : 만 55세(페어합산115세), 중학교이상 : 만 60세(페어합산 120세)</td></tr>
+                            <tr><td class="text-center font-black">7</td><td>1) 만 65세 이상 선수출신 2) 만 60세 미만 동호인 슈퍼급 3) 만 55세 이상 일반 지도자</td></tr>
+                            <tr><td class="text-center font-black">6</td><td>1) 만 60세 미만 3 ~ 4회 우승자 2) 만 60세 이상 동호인 슈퍼급</td></tr>
+                            <tr><td class="text-center font-black">5</td><td>1) 만 60세 미만 2회 우승자 2) 만 60세 이상 4회 우승자</td></tr>
+                            <tr><td class="text-center font-black">4</td><td>만 60세 이상 3회 우승자</td></tr>
+                            <tr><td class="text-center font-black">3</td><td>1) 만 60세 미만 1회 우승자 2) 연도 해제자 (만 3년 / 365일 X 3년)</td></tr>
+                            <tr><td class="text-center font-black">2</td><td>1) 만 60세 이상 1 ~ 2회 우승자 2) 신인부 우승자</td></tr>
+                            <tr><td class="text-center font-black">1</td><td>만 50세 이상 순수 동호인 비우승자</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="mt-16 mb-4">남자/여자 퓨처스부</h3>
+                <p class="font-bold text-sm">* 출전자격 (각대회별 요강 꼭 확인바람)</p>
+                <ul class="text-sm space-y-1 mb-20">
+                    <li>A) 전국대회 본선 진출자 출전 불가 (랭킹/비랭킹/ 포함) 단, 예선 순위 결정전으로 본선 1회전 진출자는 출전 가능함.</li>
+                    <li>B) 시군구 지역대회 동배 입상자 이상 출전 불가</li>
+                    <li>C) (전국) 테린이 대회 우승자 출전 불가. 입상자 분리 출전</li>
+                    <li>D) 구력제한 (남자 3년 이하/ 여자 3년 이하)</li>
+                    <li>E) NTRP 2.5 이하까지 출전 가능</li>
+                </ul>
+
+                <div class="section-divider"></div>
+
+                <h2 id="ranking">랭킹규정</h2>
                 <div class="space-y-6 text-sm text-slate-600">
-                    <p><strong>제4조 【고의 우승 회피】</strong> 고의적 입상 회피 적발 시 1년 이상 출전 정지.</p>
-                    <p><strong>제11조 【코칭 금지】</strong> 경기 중 외부 코칭 발견 시 즉시 실격 처리.</p>
-                    <p><strong>제16조 【삼진아웃제】</strong> 3년 내 3회 징계 시 영구 제명.</p>
+                    <p><strong>1. 랭킹대회의 회원</strong><br>
+                    1-1. 랭킹대회의 회원은 단체회원(대회주최자)과 개인회원(대회출전자)으로 나뉜다. 단체회원은 1-2항의 절차에 따라 가입하며, 개인회원은 KATO 홈페이지 회원가입 또는 랭킹대회에 참가신청을 한 것으로서 가입절차에 가름한다.<br>
+                    1-2. 단체회원으로 가입하고자 할 경우에는 KATO 에 연회비를 납부하여야 하며 금액은 다음과 같다.<br>
+                    •MA그룹: 70만원, A~1그룹 : 60만원 •2그룹~3그룹 : 50만원 •베테랑대회 : 30만원 •4그룹 : 30만원<br>
+                    1-3. 단체회원은 매년 시즌 전에 연회비를 KATO 사무국 (법인통장) 에 납부하며, 개인회원은 별도의 결정이 있을 때까지 회비를 부과하지 않는다.</p>
+
+                    <p><strong>2. 랭킹대회자격 및 의무</strong><br>
+                    2-1. 랭킹대회는 시즌전 대회기간을 선택하여 KATO 의 승인을 받아야 한다.<br>
+                    2-2. 랭킹대회로 승인받은 회원단체는 KATO 가 정한 규정을 지킬 의무가 있으며, 이를 위반시 KATO 로부터 제재를 받을 수 있다.<br>
+                    2-3. 새로이 랭킹대회를 승인받고자 하는 대회는 대회개최전 KATO 와 상의하여 검증을 받아야 한다.<br>
+                    2-4. 대회기간이 중복될 경우, 가장 낮은 그룹 대회끼리 같은 기간에 개최한다.<br>
+                    2-5. 랭킹대회는 각부 출전자격기준이 규정과 상이할 경우 공지전 반드시 승인을 득한 후 공지하여야 한다.<br>
+                    2-6. 랭킹대회는 대회장 (현수막) 과 인쇄물에 KATO 랭킹대회임을 표기하여야 하며, 협력업체의 팜플렛 광고를 삽입하여야 한다. 대회요강과 경기결과를 KATO 에 통보한다.</p>
+
+                    <p><strong>3. 랭킹그룹</strong><br>
+                    3-1. 그룹요건 - 종합대회(남자부 + 여자부)와 단일대회(여자부, 지도자부)로 나뉜다.<br>
+                    3-1-1. 그룹기준</p>
+                    <div class="overflow-x-auto">
+                        <table class="rule-table">
+                            <thead><tr><th>대회등급</th><th>내 용</th></tr></thead>
+                            <tbody>
+                                <tr><td>MA 그룹</td><td>▶ 서울 및 수도권은 6개부서 필수 ▶ 광역시 및 시.도는 5개부서 필수</td></tr>
+                                <tr><td>A 그룹</td><td>▶ 남자부 3개 부서, 여자부 2개 부서 필수 + 위너스부, 지도자부 선택 권장 ▶ 광역시 및 수도권은 5개 부서 필수 ▶ 남자부 통합 부서가능 (단, 서울, 경기도, 광역시는 랭킹부서 4개 종목 이상)</td></tr>
+                                <tr><td>1 그룹</td><td>▶ 4개 부서 필수 ▶ 남자부 2개 부서, 여자부 1개 부서 + 베테랑부, 국화부, 지도자부 중 필수 선택 ▶ 남자부 통합 부서 가능 (단, 서울, 경기도, 광역시는 랭킹부서 4개 종목 이상)</td></tr>
+                                <tr><td>2 그룹</td><td>▶ 3개 부서 필수 ▶ 남자부 2개 부서,여자부 1개 부서 + 베테랑부, 국화부, 지도자부 중 선택 권장 ▶ 남자부 통합 부서 가능 (단, 서울, 경기도, 광역시는 랭킹부서 4개종목 이상)</td></tr>
+                                <tr><td>3 그룹</td><td>▶ 3개 부서 필수 ▶ 남자부 통합 부서 가능 (단, 서울, 경기도, 광역시는 랭킹 부서 4개 종목 이상)</td></tr>
+                                <tr><td>4 그룹</td><td>▶ 지역대회 ▶ 2011년부터 신설되는 2개 종목 대회는 4그룹 대회로 개최함</td></tr>
+                                <tr><td>단체전</td><td>▶ 클럽 랭킹과 개인 랭킹 적용</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><strong>3-1-2. 시상부문</strong><br>
+                    * 3위까지 시상한 경우 (최소단위 현금가)<br>
+                    - 마스터즈(MA) 그룹: 우승 150만원, 준우승 100만원, 3위 60만원<br>
+                    - A ~ 1 그룹: 우승 120만원, 준우승 80만원, 3위 50만원<br>
+                    - 2 ~ 3 그룹: 우승 100만원, 준우승 60만원, 3위 40만원</p>
+
+                    <p><strong>4. 랭킹 포인트</strong><br>
+                    4-1. 포인트는 KATO 가 인정하는 대회에 출전하여 일정이상의 성적을 올렸을 때 포인트를 부여받는다.<br>
+                    4-2. 랭킹순위는 1년간 32강이상 출전하여 포인트를 획득한 대회를 기준으로 한다.<br>
+                    4-4. 연령 및 우승으로 인하여 부서이동이 있을 경우, 이전 부서의 포인트를 가지고 이동한다.<br>
+                    4-9. 개나리부 우승자는 우승 랭킹포인트를 획득하는 동시에 국화부 승격에 따른 포인트 1점을 국화부에 부여하며, 개나리부, 챌린저부 우승자는 우승 후 상위부서에 출전하여 획득한 랭킹포인트는 우승년도 한해 동안은 두 개부서에 동시 부여한다.</p>
+                </div>
+
+                <h4>랭킹 그레이드 표</h4>
+                <div class="overflow-x-auto">
+                    <table class="rule-table text-center">
+                        <thead><tr><th>GRADE</th><th>1위</th><th>2위</th><th>4강</th><th>8강</th><th>16강</th><th>32강</th><th>비고</th></tr></thead>
+                        <tbody>
+                            <tr><td>GM open</td><td>240</td><td>180</td><td>120</td><td>50</td><td>25</td><td>15</td><td>*우승자 오픈 종목</td></tr>
+                            <tr><td>MA open</td><td>200</td><td>140</td><td>90</td><td>40</td><td>20</td><td>11</td><td></td></tr>
+                            <tr><td>A open</td><td>160</td><td>112</td><td>72</td><td>32</td><td>16</td><td>10</td><td></td></tr>
+                            <tr><td>1 open</td><td>140</td><td>98</td><td>63</td><td>28</td><td>14</td><td>9</td><td></td></tr>
+                            <tr><td>GM rest</td><td>100</td><td>70</td><td>45</td><td>20</td><td>10</td><td>7</td><td>*우승자 출전불가종목</td></tr>
+                            <tr><td>4 open</td><td>20</td><td>14</td><td>9</td><td>4</td><td>2</td><td>1</td><td>*지역대회</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <h2 id="ethics">선수윤리규정</h2>
+                <div class="space-y-6 text-sm text-slate-600">
+                    <p><strong>제1조 【개론】</strong> KATO가 주관하는 대회에 참가하는 모든 선수는 선 후배 및 동료 간의 기본적인 예의와 도덕성을 최우선으로 지켜야하며 대회 기간 중 스포맨쉽을 실천하고 선수윤리규정을 준수하여야 한다.</p>
+                    <p><strong>제2조 【선수의 의무】</strong> 대회에 참가한 선수가 상대선수 및 타 선수에게 폭력을 행사하거나 상대방의 인격과 안전을 위협하는 언행을 일삼는 경우, 상벌위원회에서 진상을 파악하여 출장정지 등 중징계를 줄 수 있다.</p>
+                    <p><strong>제4조 【고의 우승 회피】</strong> ① 선수는 경기에 최선의 노력을 경주해야 한다. 감독관 또는 레프리와 주최 측이 고의적으로 우승 등 입상을 회피하거나 경기 중 이 규정을 위배 하였다고 판단하는 경우 1년이상 출전 정지의 중징계를 할 수 있다.</p>
+                    <p><strong>제10조 【경기지연】</strong> ② 포인트가 끝난 순간부터 다음 서비스의 임팩트까지 25초, 앤드 체인지 때 90초를 준수해야 한다. 위반 시 경고 및 게임 포인트 페널티가 부여된다.</p>
+                    <p><strong>제11조 【코칭】</strong> 모든 경기 중에는 코칭을 할 수 없다. 발견 시 감독관 및 레프리는 경고 후 퇴장 명령을 할 수 있으며, 이를 거부하면 해당선수의 실격을 비롯한 출장정지를 줄 수 있다.</p>
+                    <p><strong>제16조 【삼진아웃제 (영구출전정지)】</strong> 각 랭킹단체에서 선수윤리 규정에 위배되는 행위로 인하여 3년 동안 합 3회 이상 징계(경고 제외)를 받은 자는 영구 출전정지를 받을 수 있다.</p>
                 </div>
             </section>
+
         </article>
     </main>
-    <footer class="bg-slate-50 py-12 text-center border-t border-slate-100">
-        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">© 2026 KATO Official Archive</p>
+
+    <footer class="bg-slate-900 text-white py-20 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <a href="./index.html" class="text-2xl font-black italic tracking-tighter uppercase mb-4 inline-block">UBUNTU <span class="text-blue-600">TENNIS</span></a>
+            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">© 2026 Ubuntu Rules Archive. All rights reserved.</p>
+        </div>
     </footer>
 </body>
 </html>
