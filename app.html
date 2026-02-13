@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta name="google-site-verification" content="YRPalWx87Cta8Q_YBCPgL6h_ncC1xYJnWLfS6APPzcg" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="테니스 대진표 만들기, 공정한 팀 나누기, 실시간 점수 기록까지! UBUNTU 테니스 매칭 시스템은 테니스 동호회를 위한 최고의 대진표 생성 어플입니다.">
+    <meta name="keywords" content="테니스 대진표, 테니스 대진표 만들기, 테니스 매칭 어플, 테니스 팀 나누기, 테니스 대진표 생성기, tennis match maker">
+    <meta name="google-site-verification" content="YRPalWx87Cta8Q_YBCPgL6h_ncC1xYJnWLfS6APPzcg" />
+    <title>테니스 대진표 만들기 - UBUNTU 고품질 테니스 매칭 어플</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "UBUNTU Tennis Matcher",
+      "description": "Professional tennis match sheet generator and club management tool using fair algorithms.",
+      "url": "https://makebracket.site",
+      "applicationCategory": "SportsApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "테니스 대진표를 공정하게 만드는 방법은 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "UBUNTU 매칭 시스템은 NTPR(숙련도) 데이터를 기반으로 각 팀의 실력 합계가 균형을 이루도록 설계되었습니다. 단순 랜덤이 아닌 알고리즘 기반 배분을 통해 박진감 넘치는 경기를 보장합니다."
+        }
+      }, {
+        "@type": "Question",
+        "name": "테니스 매칭 어플 사용 시 개인정보가 저장되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "아니요. UBUNTU 시스템은 별도의 회원가입이 없으며 모든 데이터는 사용자의 브라우저(Local Storage)에만 저장됩니다. 외부 서버로 데이터가 전송되지 않아 안 안심하고 사용할 수 있습니다."
+        }
+      }, {
+        "@type": "Question",
+        "name": "생성된 테니스 대진표를 카카오톡으로 공유할 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. '전체 이미지 저장' 기능을 통해 대진표를 이미지로 저장하거나, '카톡 복사' 버튼을 눌러 텍스트 형태로 즉시 공유할 수 있습니다."
+        }
+      }]
+    }
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4308556336183383"
+     crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GW3Z63W3C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-5GW3Z63W3C');
+    </script>
+    <link href="./dist/output.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #d4edda; letter-spacing: -0.025em; -webkit-tap-highlight-color: transparent; } /* Changed to light green */
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        .stadium-panel { background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%); }
+        .male-gradient { background: linear-gradient(to right, #eff6ff, #dbeafe); border-left: 4px solid #2563eb; color: #1e40af; }
+        .female-gradient { background: linear-gradient(to right, #fff1f2, #ffe4e6); border-left: 4px solid #e11d48; color: #9f1239; }
+        
+        /* 타임라인 가로 스크롤 유지 */
+        .timeline-scroll { display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 20px; }
+        .court-column { min-width: 300px; flex-shrink: 0; }
+        
+        /* [V8.5 핵심] 캡처용 임시 클래스: 가로 스크롤을 해제하고 전체를 펼침 */
+        .capture-mode { display: block !important; overflow: visible !important; width: fit-content !important; }
+        .capture-mode .court-column { margin-bottom: 2rem; width: 600px !important; } /* 캡처 시 가로폭 고정 */
+
+        @keyframes rank-pulse {
+            0% { transform: scale(1.02); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
+        }
+        .rank-1 { 
+            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); 
+            border: 1px solid #fbbf24; 
+            color: #92400e !important; 
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.4);
+            transform: scale(1.02);
+            position: relative;
+            z-index: 10;
+            animation: rank-pulse 2s infinite ease-in-out;
+        }
+        .rank-2 { 
+            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); 
+            border: 1px solid #94a3b8; 
+            color: #334155 !important;
+            box-shadow: 0 6px 12px rgba(148, 163, 184, 0.2);
+        }
+        .rank-3 { 
+            background: linear-gradient(135deg, #ffedd5 0%, #fdba74 100%); 
+            border: 1px solid #f97316; 
+            color: #7c2d12 !important;
+            box-shadow: 0 6px 12px rgba(249, 115, 22, 0.2);
+        }
+        .rank-1:hover, .rank-2:hover, .rank-3:hover {
+            transform: translateY(-3px) scale(1.05);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: brightness(1.05);
+        }
+        .score-input { width: 50px; text-align: center; font-weight: 900; font-size: 1.1rem; background: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0; padding: 5px 0; }
+        .match-finished { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
+        ::-webkit-scrollbar { height: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+
+
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "vfms5wb8uj");
+    </script>
+</head>
+<body class="p-3 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <a href="./index.html" class="block">
+                    <h1 class="text-3xl font-black italic text-slate-900 uppercase tracking-tighter">UBUNTU <span class="text-blue-600">매칭시스템</span></h1>
+                </a>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-1">Full Export Engine v8.5 <span id="app-version" class="text-blue-500 ml-2"></span></p>
+            </div>
+            <nav class="flex flex-wrap gap-4 text-[11px] font-black uppercase tracking-tighter text-slate-500">
+                <a href="./index.html" class="hover:text-blue-600 transition-colors underline decoration-blue-200 decoration-2 underline-offset-4">Blog</a>
+                <a href="./guide.html" class="hover:text-blue-600 transition-colors">Guide</a>
+                <a href="./rules.html" class="hover:text-emerald-600 transition-colors">Rules</a>
+                <a href="./equipment.html" class="hover:text-orange-600 transition-colors">Equipment</a>
+                <a href="./training.html" class="hover:text-green-600 transition-colors">Training</a>
+            </nav>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="toggleLanguage()" id="lang-btn" class="bg-white text-slate-900 px-3 py-2 rounded-xl text-[10px] font-black border border-slate-200">EN</button>
+                <button onclick="exportData()" class="bg-blue-50 text-blue-600 px-3 py-2 rounded-xl text-[10px] font-black border border-blue-100" data-i18n="export">내보내기</button>
+                <button onclick="document.getElementById('importFile').click()" class="bg-orange-50 text-orange-600 px-3 py-2 rounded-xl text-[10px] font-black border border-orange-100" data-i18n="import">불러오기</button>
+                <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+                <div class="h-8 w-[1px] bg-slate-200 mx-1 hidden md:block"></div>
+                <button onclick="copyToClipboard()" class="bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-[10px] font-black">카톡 복사</button>
+                <button onclick="saveAsImage()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-[11px] font-black shadow-lg">전체 이미지 저장 📸</button>
+            </div>
+        </header>
+
+        <!-- NEW: Introduction Section for AdSense -->
+        <section class="mb-10 p-8 bg-white/50 rounded-[2.5rem] border border-white/50 backdrop-blur-sm">
+            <h2 class="text-xl font-black text-slate-800 mb-3 uppercase italic">Professional Tennis Matching Platform</h2>
+            <p class="text-sm text-slate-600 leading-relaxed max-w-3xl">
+                UBUNTU 테니스 매칭 시스템은 동호회 운영진의 번거로운 대진표 작성을 자동화하고, 실시간 점수 기록과 통계를 통해 더욱 즐거운 테니스 문화를 만드는 전문 플랫폼입니다. 공정한 팀 배분 알고리즘과 아름다운 시각적 리포트를 통해 클럽의 품격을 높여보세요. 모든 서비스는 무료로 제공되며 데이터는 사용자의 브라우저에 안전하게 보관됩니다.
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+            <div class="lg:col-span-4 space-y-4">
+                <div class="glass-card p-5 rounded-[2rem]">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-3">Player Manager</h3>
+                    <div class="space-y-2 mb-4">
+                        <input type="text" id="p-name" placeholder="이름" class="w-full p-2.5 border rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-blue-500">
+                        <div class="flex gap-2">
+                            <select id="p-gender" class="flex-1 p-2.5 border rounded-xl text-xs font-bold"><option value="남">남성</option><option value="여">여성</option></select>
+                            <input type="number" id="p-ntpr" step="0.1" value="3.0" class="flex-1 p-2.5 border rounded-xl text-xs font-bold">
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="addOrUpdatePlayer()" id="submit-btn" class="flex-grow bg-slate-900 text-white py-2.5 rounded-xl text-[10px] font-black uppercase">Add / Update</button>
+                            <button onclick="resetForm()" id="cancel-btn" class="hidden px-3 bg-slate-200 py-2.5 rounded-xl text-[10px] font-black">X</button>
+                        </div>
+                    </div>
+                    <div id="member-library" class="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1"></div>
+                </div>
+
+                <div class="glass-card p-5 rounded-[2rem]">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-2">코트대관상태</h3>
+                    <select id="court-count" class="w-full p-2.5 rounded-xl border-slate-200 border bg-white font-black text-[11px] outline-none">
+                        <option value="1">1개 코트</option><option value="2" selected>2개 코트</option><option value="3">3개 코트</option><option value="4">4개 코트</option><option value="5">5개 코트</option>
+                    </select>
+                    <div id="court-config-list" class="mt-2 space-y-1.5"></div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div class="stadium-panel p-7 rounded-[2.5rem] shadow-2xl h-full flex flex-col relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6 relative z-10">
+                        <h2 class="text-xl font-bold text-white uppercase italic">참석인원 <span id="player-count" class="text-blue-400 text-xs font-normal ml-2">0명</span></h2>
+                        <div class="flex gap-1.5 w-full md:w-auto">
+                            <select id="match-type" class="flex-1 md:flex-none bg-slate-800 text-white text-[12px] px-5 py-3 rounded-xl font-bold border border-slate-700">
+                                <option value="gender">남복/여복</option><option value="mixed" selected>혼복</option><option value="random">랜덤</option>
+                            </select>
+                            <button onclick="generateTimeline()" class="flex-1 md:flex-none bg-blue-600 text-white px-6 py-3 rounded-xl font-black text-[12px] active:scale-95 transition-all shadow-lg uppercase">생성</button>
+                        </div>
+                    </div>
+                    <div id="stadium-pool" class="flex-grow flex flex-wrap gap-2 p-6 rounded-2xl border border-slate-700 border-dashed bg-slate-800/30 min-h-[180px] content-start relative z-10 overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <section id="capture-area" class="mb-16 bg-white p-8 rounded-[3.5rem] shadow-sm">
+            <div class="mb-8 border-b pb-4 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tighter uppercase italic">대진표</h2>
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Tennis Arena Official Match Sheet</p>
+                </div>
+                <p id="capture-date" class="text-sm font-black text-blue-600"></p>
+            </div>
+            <div id="timeline-board" class="timeline-scroll">
+                <div class="w-full text-center py-20 text-slate-300 font-bold uppercase text-xs">참석자를 선택하고 대진을 생성하세요.</div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pb-20">
+            <div class="lg:col-span-7 glass-card p-8 rounded-[3rem]">
+                <h3 class="text-lg font-black text-slate-800 uppercase mb-6 tracking-tight" data-i18n="statsTitle">📊 오늘 매칭 상세 통계</h3>
+                <div id="stat-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                
+                <!-- SEO Content Section for AdSense Approval -->
+                <div class="mt-12 pt-12 border-t border-slate-100">
+                    <h3 class="text-2xl font-black text-slate-900 mb-6" data-i18n="aboutTitle">UBUNTU 테니스 매칭 시스템: 공정한 대진표의 중요성</h3>
+                    <div class="prose prose-slate max-w-none text-sm text-slate-600 leading-relaxed space-y-6">
+                        <p>
+                            테니스 동호회 운영에서 가장 어려운 점 중 하나는 모든 회원이 만족할 수 있는 <b>공정한 대진표</b>를 짜는 것입니다. 실력 차이가 너무 나거나, 특정 인원끼리만 계속 경기를 하게 되면 동호회의 활력이 떨어질 수 있습니다. UBUNTU 테니스 매칭 시스템은 이러한 고민을 해결하기 위해 개발되었습니다.
+                        </p>
+                        
+                        <h4 class="text-lg font-bold text-slate-800">1. 데이터 기반의 공정한 팀 배분</h4>
+                        <p>
+                            본 시스템은 NTPR(National Tennis Rating Program) 지수와 유사한 숙련도 데이터를 기반으로 팀을 나눕니다. 단순한 랜덤 매칭이 아니라, 각 코트별 총합 실력이 균형을 이루도록 설계되어 박진감 넘치는 경기를 보장합니다. 특히 혼복(Mixed Doubles), 남복/여복(Gender Doubles) 등 다양한 모드를 지원하여 클럽의 성격에 맞는 최적의 매칭을 제공합니다.
+                        </p>
+
+                        <h4 class="text-lg font-bold text-slate-800">2. 실시간 기록과 통계의 가치</h4>
+                        <p>
+                            경기가 끝날 때마다 점수를 기록하는 것은 단순한 승패 확인 이상의 의미를 갖습니다. 누적된 데이터는 클럽 내 랭킹(Club Ranking)을 형성하며, 이는 회원들에게 건강한 동기부여를 제공합니다. UBUNTU 시스템은 실시간으로 승률, 득실차 등을 계산하여 시각적인 통계 자료를 즉시 생성합니다.
+                        </p>
+
+                        <h4 class="text-lg font-bold text-slate-800">3. 사용자를 배려한 UX와 공유 기능</h4>
+                        <p>
+                            복잡한 설정 없이도 몇 번의 클릭만으로 전체 라운드 대진표를 생성할 수 있습니다. 생성된 대진표는 이미지 저장 기능을 통해 카카오톡 등 SNS로 즉시 공유가 가능하며, '카톡 복사' 기능을 활용해 텍스트 형태로도 빠르게 전달할 수 있습니다. 이는 운영진의 업무 시간을 획기적으로 단축시켜줍니다.
+                        </p>
+
+                        <h4 class="text-lg font-bold text-slate-800">4. 철저한 개인정보 보호</h4>
+                        <p>
+                            UBUNTU 매칭 시스템은 별도의 회원가입이나 서버 저장을 요구하지 않습니다. 모든 플레이어 정보와 경기 기록은 사용자의 웹 브라우저(Local Storage)에만 저장됩니다. 따라서 개인정보 유출 걱정 없이 안심하고 무료로 사용하실 수 있습니다.
+                        </p>
+                    </div>
+
+                    <h4 class="text-sm font-black text-slate-800 mt-10 mb-3" data-i18n="guideTitle">💡 상세 사용법 가이드</h4>
+                    <ul class="text-xs text-slate-500 space-y-2 list-disc pl-4" data-i18n="guideList">
+                        <li><b>멤버 등록:</b> 좌측 상단 'Player Manager'에서 이름과 성별, 실력을 입력하여 멤버를 추가하세요.</li>
+                        <li><b>참석자 선택:</b> 경기 참여를 원하는 멤버의 카드를 클릭하여 '상태'를 활성화합니다.</li>
+                        <li><b>코트 및 방식 설정:</b> 사용 가능한 코트 수와 매칭 방식(혼복, 랜덤 등)을 선택하세요.</li>
+                        <li><b>대진 생성:</b> '생성' 버튼을 누르면 인공지능 알고리즘이 자동으로 최적의 대진을 구성합니다.</li>
+                        <li><b>점수 입력:</b> 각 매치 박스의 점수 입력 칸을 활용해 결과를 기록하고 '완료'를 누르세요.</li>
+                        <li><b>결과 공유:</b> 상단의 이미지 저장 버튼으로 예쁜 대진표 이미지를 내려받아 공지하세요.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="lg:col-span-5 stadium-panel p-8 rounded-[3rem] shadow-2xl text-white">
+                <h3 class="text-lg font-black text-blue-400 uppercase mb-8 tracking-[0.2em]" data-i18n="rankingTitle">🏆 Club Ranking</h3>
+                <div id="ranking-list" class="space-y-3 font-mono text-xs"></div>
+                
+                <!-- NEW: Privacy/Policy Section -->
+                <div class="mt-12 pt-12 border-t border-slate-700/50 text-[10px] text-slate-400 leading-relaxed">
+                    <p class="mb-2 font-bold text-slate-300" data-i18n="policyTitle">개인정보 및 이용정책</p>
+                    <p data-i18n="policyDesc">본 서비스는 별도의 회원가입 없이 이용 가능하며, 입력된 플레이어 정보 및 경기 데이터는 귀하의 브라우저에만 저장됩니다. 어떠한 데이터도 외부 서버로 전송되지 않으므로 안심하고 사용하실 수 있습니다.</p>
+                    <div class="mt-4 flex flex-wrap gap-4">
+                        <a href="./guide.html" class="underline font-bold text-blue-400">Tennis Guide</a>
+                        <a href="./rules.html" class="underline font-bold text-emerald-500">Match Rules</a>
+                        <a href="./equipment.html" class="underline font-bold text-orange-400">Equipment</a>
+                        <a href="./training.html" class="underline font-bold text-green-500">Training Tips</a>
+                        <a href="./privacy.html" class="underline">Privacy</a>
+                        <a href="./terms.html" class="underline">Terms</a>
+                        <a href="mailto:kokoro456@gmail.com" class="underline">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="mt-10 mb-20 text-center">
+            <button onclick="resetAllData()" class="text-[9px] font-black text-red-400 uppercase tracking-[0.3em] underline">Reset All Arena Data</button>
+        </footer>
+    </div>
+
+    <script>
+        const translations = {
+            ko: {
+                lang: "EN",
+                export: "내보내기",
+                import: "불러오기",
+                copy: "카톡 복사",
+                saveImage: "전체 이미지 저장 📸",
+                playerManager: "Player Manager",
+                name: "이름",
+                male: "남성",
+                female: "여성",
+                addUpdate: "Add / Update",
+                courtStatus: "코트대관상태",
+                participants: "참석인원",
+                matchTypeGender: "남복/여복",
+                matchTypeMixed: "혼복",
+                matchTypeRandom: "랜덤",
+                generate: "생성",
+                matchSheet: "대진표",
+                stats: "📊 오늘 매칭 상세 통계",
+                ranking: "🏆 Club Ranking",
+                reset: "Reset All Arena Data",
+                playerCount: "명",
+                court: "번 코트",
+                hour: "시간",
+                wait: "대기",
+                save: "저장",
+                done: "완료 ✓",
+                played: "경기 완료",
+                noMatch: "참석자를 선택하고 대진을 생성하세요.",
+                statsTitle: "📊 오늘 매칭 상세 통계",
+                aboutTitle: "UBUNTU 테니스 매칭 시스템이란?",
+                aboutDesc: "UBUNTU 매칭 시스템은 테니스 동호회와 클럽을 위한 전문적인 대진표 생성 도구입니다. 공정한 팀 배분, 실시간 경기 결과 기록, 그리고 시각적으로 아름다운 대진표 이미지를 제공하여 클럽 운영의 효율성을 극대화합니다. 모든 데이터는 브라우저 로컬 저장소에 안전하게 보관됩니다.",
+                guideTitle: "💡 주요 사용법",
+                guideList: "<li>플레이어 매니저에서 멤버를 추가하거나 편집하세요.</li><li>참석할 인원을 선택하고 코트 수와 매칭 방식을 설정합니다.</li><li>'생성' 버튼을 눌러 자동으로 라운드별 대진표를 만듭니다.</li><li>경기 후 점수를 입력하면 실시간으로 클럽 랭킹과 통계가 업데이트됩니다.</li><li>카톡 복사나 이미지 저장 기능을 통해 결과를 공유하세요.</li>",
+                rankingTitle: "🏆 Club Ranking",
+                policyTitle: "개인정보 및 이용정책",
+                policyDesc: "본 서비스는 별도의 회원가입 없이 이용 가능하며, 입력된 플레이어 정보 및 경기 데이터는 귀하의 브라우저에만 저장됩니다. 어떠한 데이터도 외부 서버로 전송되지 않으므로 안심하고 사용하실 수 있습니다."
+            },
+            en: {
+                lang: "KO",
+                export: "Export",
+                import: "Import",
+                copy: "Copy Text",
+                saveImage: "Save Image 📸",
+                playerManager: "Player Manager",
+                name: "Name",
+                male: "Male",
+                female: "Female",
+                addUpdate: "Add / Update",
+                courtStatus: "Court Status",
+                participants: "Participants",
+                matchTypeGender: "MD/WD",
+                matchTypeMixed: "Mixed",
+                matchTypeRandom: "Random",
+                generate: "Generate",
+                matchSheet: "Match Sheet",
+                stats: "📊 Today's Match Stats",
+                ranking: "🏆 Club Ranking",
+                reset: "Reset All Arena Data",
+                playerCount: "players",
+                court: "Court",
+                hour: "hr",
+                wait: "Wait",
+                save: "Save",
+                done: "Done ✓",
+                played: "Played",
+                noMatch: "Select players and generate matches.",
+                statsTitle: "📊 Today's Match Stats",
+                aboutTitle: "What is UBUNTU Tennis Matcher?",
+                aboutDesc: "UBUNTU Matching System is a professional match sheet generation tool for tennis clubs. It maximizes club management efficiency by providing fair team allocation, real-time match results, and beautiful match sheet images. All data is securely stored in your browser's local storage.",
+                guideTitle: "💡 How to Use",
+                guideList: "<li>Add or edit members in the Player Manager.</li><li>Select participants and configure court count and match type.</li><li>Click 'Generate' to automatically create round-by-round matches.</li><li>Enter scores after matches to update club rankings and stats in real-time.</li><li>Share results using Copy Text or Save Image features.</li>",
+                rankingTitle: "🏆 Club Ranking",
+                policyTitle: "Privacy & Usage Policy",
+                policyDesc: "This service can be used without registration. Player info and match data are stored only in your browser. No data is sent to external servers, so you can use it with peace of mind."
+            }
+        };
+
+        let currentLang = localStorage.getItem('tennis_lang') || 'ko';
+
+        const initialMembers = [
+            { id: 1, name: '김철수', gender: '남', ntpr: 3.5 }, { id: 2, name: '이영희', gender: '여', ntpr: 3.0 },
+            { id: 3, name: '박지성', gender: '남', ntpr: 4.5 }, { id: 4, name: '손흥민', gender: '남', ntpr: 5.0 },
+            { id: 5, name: '김연아', gender: '여', ntpr: 4.0 }, { id: 6, name: '차은우', gender: '남', ntpr: 3.5 },
+            { id: 7, name: '한소희', gender: '여', ntpr: 2.5 }, { id: 8, name: '강동원', gender: '남', ntpr: 4.0 },
+            { id: 9, name: '아이유', gender: '여', ntpr: 3.0 }, { id: 10, name: '공유', gender: '남', ntpr: 4.5 },
+            { id: 11, name: '카리나', gender: '여', ntpr: 3.5 }, { id: 12, name: '윈터', gender: '여', ntpr: 3.0 }
+        ];
+
+        let members = JSON.parse(localStorage.getItem('tennis_v85_data')) || initialMembers;
+        let stadium = [];
+        let playerStats = {};
+        let editingId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('capture-date').innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // App Version Logic
+            let appVersion = localStorage.getItem('appVersion') || 'v8.5';
+            document.getElementById('app-version').innerText = appVersion;
+
+            updateUI();
+            renderLibrary(); renderRanking(); initCourtInputs();
+            document.getElementById('court-count').addEventListener('change', initCourtInputs);
+        });
+
+        function togglePlayer(id) {
+            const idx = stadium.findIndex(m => m.id === id);
+            if (idx > -1) { 
+                stadium.splice(idx, 1); 
+                delete playerStats[id]; 
+            } else {
+                const p = members.find(m => m.id === id);
+                if (p) { 
+                    stadium.push({...p}); 
+                    playerStats[id] = { games: 0, wins: 0, losses: 0, ptsWon: 0, ptsLost: 0 }; 
+                }
+            }
+            renderStadium(); renderLibrary(); renderStats();
+        }
+
+        function addOrUpdatePlayer() {
+            const name = document.getElementById('p-name').value.trim();
+            const gender = document.getElementById('p-gender').value;
+            const ntpr = parseFloat(document.getElementById('p-ntpr').value);
+            if (!name) return alert(currentLang === 'ko' ? '이름을 입력하세요' : 'Please enter name');
+
+            if (editingId) {
+                const p = members.find(m => m.id === editingId);
+                if(p) { p.name = name; p.gender = gender; p.ntpr = ntpr; }
+                editingId = null; 
+                document.getElementById('submit-btn').innerText = "Add / Update";
+            } else { 
+                members.push({ id: Date.now(), name, gender, ntpr }); 
+            }
+            saveLocal(); renderLibrary(); renderRanking(); resetForm();
+        }
+
+        function editPlayer(id, e) {
+            if(e) e.stopPropagation();
+            const p = members.find(m => m.id === id);
+            editingId = id; 
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-gender').value = p.gender;
+            document.getElementById('p-ntpr').value = p.ntpr;
+            document.getElementById('submit-btn').innerText = currentLang === 'ko' ? "정보 수정" : "Update Info";
+            document.getElementById('cancel-btn').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() { 
+            editingId = null; 
+            document.getElementById('p-name').value = ''; 
+            document.getElementById('submit-btn').innerText = "Add / Update";
+            document.getElementById('cancel-btn').classList.add('hidden'); 
+        }
+
+        function generateTimeline() {
+            if (stadium.length < 4) return alert(currentLang === 'ko' ? '4명 이상 선택하세요.' : 'Select at least 4 players.');
+            const board = document.getElementById('timeline-board');
+            board.innerHTML = '';
+            const courtCount = parseInt(document.getElementById('court-count').value);
+            const matchType = document.getElementById('match-type').value;
+
+            stadium.forEach(p => {
+                if (!playerStats[p.id]) playerStats[p.id] = { games: 0, wins: 0, losses: 0, ptsWon: 0, ptsLost: 0 };
+                playerStats[p.id].games = 0;
+            });
+
+            let maxSlots = 0;
+            const courtConfigs = [];
+            for (let c = 1; c <= courtCount; c++) {
+                const start = parseInt(document.getElementById(`court-${c}-start`).value);
+                const duration = parseInt(document.getElementById(`court-${c}-duration`).value);
+                const slots = duration * 2;
+                if (slots > maxSlots) maxSlots = slots;
+                courtConfigs.push({ id: c, start, slots, matches: [] });
+            }
+
+            for (let s = 0; s < maxSlots; s++) {
+                let assignedInSlot = new Set();
+                for (let c = 0; c < courtCount; c++) {
+                    const config = courtConfigs[c];
+                    if (s < config.slots) {
+                        const players = pickPlayersForMatch(matchType, assignedInSlot);
+                        config.matches.push(players);
+                        players.forEach(p => {
+                            if (p) {
+                                assignedInSlot.add(p.id);
+                                playerStats[p.id].games++;
+                            }
+                        });
+                    }
+                }
+            }
+
+            courtConfigs.forEach(config => {
+                const col = document.createElement('div');
+                col.className = 'court-column space-y-4';
+                col.innerHTML = `<div class="p-4 bg-slate-900 text-white rounded-[1.8rem] shadow-xl font-black text-center text-[9px] uppercase tracking-widest">${config.id}${translations[currentLang].court}</div>`;
+                
+                config.matches.forEach((players, s) => {
+                    const h = config.start + Math.floor(s/2);
+                    const timeStr = `${h < 10 ? '0'+h : h}:${(s%2===0 ? '00' : '30')}`;
+                    col.innerHTML += renderMatchCard(s + 1, timeStr, players);
+                });
+                board.appendChild(col);
+                col.querySelectorAll('.drag-zone').forEach(el => new Sortable(el, { group: 'tennis', animation: 200 }));
+            });
+            renderStats();
+        }
+
+        function pickPlayersForMatch(type, assignedInSlot) {
+            let availablePool = stadium.filter(p => !assignedInSlot.has(p.id))
+                .sort((a, b) => playerStats[a.id].games - playerStats[b.id].games || Math.random() - 0.5);
+            
+            if (availablePool.length < 4) return [null, null, null, null];
+
+            let males = availablePool.filter(p => p.gender === '남');
+            let females = availablePool.filter(p => p.gender === '여');
+
+            if (type === 'gender') {
+                if (males.length >= 4) return males.slice(0, 4);
+                if (females.length >= 4) return females.slice(0, 4);
+                if (males.length >= 2 && females.length >= 2) return [males[0], males[1], females[0], females[1]];
+                return availablePool.slice(0, 4);
+            } else if (type === 'mixed') {
+                if (males.length >= 2 && females.length >= 2) return [males[0], females[0], males[1], females[1]];
+                if (males.length >= 4) return males.slice(0, 4);
+                if (females.length >= 4) return females.slice(0, 4);
+                return availablePool.slice(0, 4);
+            }
+            return availablePool.slice(0, 4);
+        }
+
+        function applyNtpr(ids, change) { 
+            ids.forEach(id => { 
+                const m = members.find(m => m.id == id); 
+                if (m) m.ntpr = Math.max(1.0, Math.min(7.0, m.ntpr + change)); 
+            }); 
+        }
+
+        function renderRanking() {
+            document.getElementById('ranking-list').innerHTML = [...members].sort((a,b)=>b.ntpr-a.ntpr).map((m,i)=>`
+                <div class="flex items-center justify-between p-3 rounded-2xl ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'bg-white/5 border border-white/10 shadow-sm'}">
+                    <div class="flex items-center gap-4"><span class="text-[10px] font-black w-4 text-center tracking-tighter">${i===0?'👑':i===1?'🥈':i===2?'🥉':i+1}</span><span class="font-black text-[12px] uppercase tracking-tighter italic">${m.name}</span></div><span class="text-[12px] font-black tracking-tighter">${m.ntpr.toFixed(2)}</span>
+                </div>`).join('');
+        }
+
+        function resetAllData() { 
+            if(confirm(currentLang === 'ko' ? '모든 데이터를 초기화할까요?' : 'Reset all data?')) { 
+                localStorage.clear(); location.reload(); 
+            } 
+        }
+
+        function exportData() {
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(JSON.stringify(members, null, 2));
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', `TennisArena_Backup_${new Date().toLocaleDateString()}.json`);
+            linkElement.click();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        members = imported;
+                        saveLocal(); location.reload();
+                    } else { alert('Invalid format'); }
+                } catch (err) { alert('Error reading file'); }
+            };
+            reader.readAsText(file);
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ko' ? 'en' : 'ko';
+            localStorage.setItem('tennis_lang', currentLang);
+            updateUI();
+            renderLibrary();
+            renderStadium();
+            initCourtInputs();
+            renderStats();
+            renderRanking();
+            if (stadium.length === 0) {
+                document.getElementById('timeline-board').innerHTML = `<div class="w-full text-center py-20 text-slate-300 font-bold uppercase text-xs">${translations[currentLang].noMatch}</div>`;
+            }
+        }
+
+        function updateUI() {
+            const t = translations[currentLang];
+            document.getElementById('lang-btn').innerText = t.lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    if (key === 'guideList') {
+                        el.innerHTML = t[key];
+                    } else {
+                        el.innerText = t[key];
+                    }
+                }
+            });
+            document.getElementById('p-name').placeholder = t.name;
+            document.getElementById('p-gender').options[0].text = t.male;
+            document.getElementById('p-gender').options[1].text = t.female;
+            
+            // Static text translation
+            document.querySelector('h3.text-slate-400').innerText = t.playerManager;
+            document.querySelectorAll('h3')[1].innerText = t.courtStatus;
+            document.querySelector('h2.text-white').firstChild.textContent = t.participants + ' ';
+            document.querySelector('button[onclick="generateTimeline()"]').innerText = t.generate;
+            document.querySelector('h2.text-3xl.italic').innerText = t.matchSheet;
+            document.querySelector('h3.text-slate-800').innerText = t.stats;
+            document.querySelector('h3.text-blue-400').innerText = t.ranking;
+            document.querySelector('button[onclick="resetAllData()"]').innerText = t.reset;
+            
+            const courtSelect = document.getElementById('court-count');
+            for(let i=0; i<courtSelect.options.length; i++) {
+                courtSelect.options[i].text = `${i+1}${currentLang === 'ko' ? '개 코트' : ' Court' + (i > 0 ? 's' : '')}`;
+            }
+
+            const matchType = document.getElementById('match-type');
+            matchType.options[0].text = t.matchTypeGender;
+            matchType.options[1].text = t.matchTypeMixed;
+            matchType.options[2].text = t.matchTypeRandom;
+        }
+
+        function saveLocal() { localStorage.setItem('tennis_v85_data', JSON.stringify(members)); }
+
+        // [V8.5 핵심] 전체 대진표 이미지 저장 로직
+        async function saveAsImage() {
+            const t = translations[currentLang];
+            const target = document.getElementById('capture-area');
+            const board = document.getElementById('timeline-board');
+            
+            if (stadium.length === 0) return alert(currentLang === 'ko' ? '대진표가 비어있습니다.' : 'Match sheet is empty.');
+            
+            alert(currentLang === 'ko' ? '전체 코트 대진표를 하나의 이미지로 생성합니다.\n잠시만 기다려주세요.' : 'Generating full match sheet image.\nPlease wait.');
+
+            // 1. 임시로 가로 스크롤을 해제하고 전체를 펼침
+            const originalBoardClass = board.className;
+            board.className = "capture-mode"; 
+
+            try {
+                const canvas = await html2canvas(target, { 
+                    backgroundColor: '#ffffff', 
+                    scale: 2, 
+                    useCORS: true,
+                    windowWidth: 1200, // 넉넉한 너비 확보
+                });
+
+                const data = canvas.toDataURL("image/png");
+                const win = window.open();
+                
+                if(!win) {
+                    const link = document.createElement('a');
+                    link.download = `TennisArena_FullTimeline_${Date.now()}.png`;
+                    link.href = data; link.click();
+                    alert(currentLang === 'ko' ? '팝업이 차단되어 이미지 다운로드를 시작합니다.' : 'Popup blocked. Starting download.');
+                } else {
+                    win.document.write(`<body style="margin:0; background:#333; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:sans-serif;">
+                        <p style="color:white; font-size:14px; margin-bottom:15px;">${currentLang === 'ko' ? '전체 코트가 포함된 이미지입니다. 길게 눌러 사진첩에 저장하세요.' : 'Image includes all courts. Long press to save to your gallery.'}</p>
+                        <img src="${data}" style="max-width:95%; max-height:80vh; border:2px solid #555; box-shadow:0 0 30px rgba(0,0,0,0.5);">
+                        <button onclick="window.close()" style="margin-top:20px; padding:12px 24px; background:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">${currentLang === 'ko' ? '닫기' : 'Close'}</button>
+                    </body>`);
+                }
+            } catch (e) {
+                alert(currentLang === 'ko' ? '이미지 생성 중 오류가 발생했습니다.' : 'Error generating image.');
+                console.error(e);
+            } finally {
+                // 2. 캡처가 끝나면 원래 레이아웃(가로 스크롤)으로 복구
+                board.className = originalBoardClass;
+            }
+        }
+
+        function renderLibrary() {
+            document.getElementById('member-library').innerHTML = members.map(m => {
+                const isSelected = stadium.some(s => s.id === m.id);
+                const gender = m.gender === '남' ? translations[currentLang].male : translations[currentLang].female;
+                return `
+                    <div onclick="togglePlayer(${m.id})" class="relative p-3 rounded-2xl border transition-all ${m.gender === '남' ? 'male-gradient' : 'female-gradient'} ${isSelected ? 'border-blue-600 ring-2 ring-blue-500/10' : 'border-slate-100'} shadow-sm">
+                        <div class="font-bold text-[11px] truncate">${m.name} ${isSelected ? '✅' : ''}</div>
+                        <div class="text-[8px] opacity-40 font-black italic">NTPR ${m.ntpr.toFixed(2)}</div>
+                        <button onclick="editPlayer(${m.id}, event)" class="absolute top-1 right-1 bg-white/60 rounded-full w-5 h-5 text-[8px] flex items-center justify-center border">✎</button>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderStadium() {
+            const pool = document.getElementById('stadium-pool');
+            document.getElementById('player-count').innerText = `${stadium.length}${translations[currentLang].playerCount}`;
+            if (stadium.length === 0) { pool.innerHTML = `<p class="text-slate-500 text-[11px] italic w-full text-center py-10">${currentLang === 'ko' ? '플레이어를 선택하세요.' : 'Select players.'}</p>`; return; }
+            pool.innerHTML = stadium.map(m => `
+                <div class="px-3 py-1.5 rounded-xl text-[10px] font-black shadow-lg flex items-center gap-2 ${m.gender === '남' ? 'bg-blue-600 text-white' : 'bg-rose-600 text-white'}">
+                    <span onclick="togglePlayer(${m.id})" class="cursor-pointer opacity-70">✕</span><span>${m.name}</span>
+                </div>`).join('');
+        }
+
+        function initCourtInputs() {
+            const count = parseInt(document.getElementById('court-count').value);
+            const t = translations[currentLang];
+            document.getElementById('court-config-list').innerHTML = Array.from({length: count}, (_, i) => `
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-[10px] font-bold">
+                    <span class="text-slate-400 uppercase tracking-tighter">${i+1}${t.court}</span>
+                    <select id="court-${i+1}-start" class="bg-transparent text-blue-600 outline-none">${Array.from({length: 24}, (_, h) => `<option value="${h}" ${h===14 ? 'selected' : ''}>${h}:00</option>`).join('')}</select>
+                    <select id="court-${i+1}-duration" class="bg-transparent text-slate-500 outline-none">${Array.from({length: 6}, (_, d) => `<option value="${d+1}">${d+1}${t.hour}</option>`).join('')}</select>
+                </div>`).join('');
+        }
+
+        function renderMatchCard(round, time, p) {
+            const t = translations[currentLang];
+            return `
+                <div class="match-card glass-card p-5 rounded-[2.2rem] border-t-8 border-slate-800 shadow-sm">
+                    <div class="flex justify-between items-center mb-4 text-[9px] font-black"><span class="text-slate-400 font-mono italic">ROUND ${round}</span><span class="text-blue-600 font-mono font-black">${time}</span></div>
+                    <div class="space-y-3"><div class="drag-zone space-y-1">${renderPlayerMini(p[0])} ${renderPlayerMini(p[1])}</div><div class="text-center text-[7px] font-black text-slate-200 tracking-[0.5em]">VS</div><div class="drag-zone space-y-1">${renderPlayerMini(p[2])} ${renderPlayerMini(p[3])}</div></div>
+                    <div class="mt-5 flex items-center justify-between gap-1.5 bg-slate-50 p-3 rounded-2xl">
+                        <input type="number" class="score-input score-a" placeholder="0"><input type="number" class="score-input score-b" placeholder="0">
+                        <button onclick="confirmResult(this)" class="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-[9px] font-black active:scale-95 shadow-md uppercase">${t.save}</button>
+                    </div>
+                </div>`;
+        }
+
+        function renderPlayerMini(p) {
+            if (!p) return `<div class="p-3 bg-white/50 border border-dashed rounded-xl text-[8px] text-center text-slate-300">${translations[currentLang].wait}</div>`;
+            return `<div class="p-3 rounded-xl shadow-sm text-[10px] font-black flex justify-between items-center cursor-move ${p.gender === '남' ? 'male-gradient' : 'female-gradient'}" data-id="${p.id}"><span>${p.name}</span><span class="text-[7px] opacity-40 font-mono">${p.ntpr.toFixed(2)}</span></div>`;
+        }
+
+        function confirmResult(btn) {
+            const card = btn.closest('.match-card'), sa = parseInt(card.querySelector('.score-a').value), sb = parseInt(card.querySelector('.score-b').value);
+            if (isNaN(sa) || isNaN(sb)) return alert(currentLang === 'ko' ? '점수를 입력하세요.' : 'Please enter scores.');
+            const p = card.querySelectorAll('[data-id]'), tA = [p[0].dataset.id, p[1].dataset.id], tB = [p[2].dataset.id, p[3].dataset.id];
+            [...tA].forEach(id => { 
+                playerStats[id].games++;
+                playerStats[id].ptsWon += sa; 
+                playerStats[id].ptsLost += sb; 
+                if(sa>sb) playerStats[id].wins++; else if(sb>sa) playerStats[id].losses++; 
+            });
+            [...tB].forEach(id => { 
+                playerStats[id].games++;
+                playerStats[id].ptsWon += sb; 
+                playerStats[id].ptsLost += sa; 
+                if(sb>sa) playerStats[id].wins++; else if(sa>sb) playerStats[id].losses++; 
+            });
+            sa > sb ? applyNtpr(tA, 0.1) : (sb > sa ? applyNtpr(tB, 0.1) : null); 
+            card.classList.add('match-finished'); btn.innerHTML = translations[currentLang].done; saveLocal(); renderStats(); renderRanking(); renderLibrary();
+        }
+
+        function renderStats() {
+            const t = translations[currentLang];
+            document.getElementById('stat-grid').innerHTML = stadium.map(m => {
+                const s = playerStats[m.id], d = (s.ptsWon || 0) - (s.ptsLost || 0);
+                return `<div class="bg-white p-4 rounded-3xl border-l-8 ${m.gender === '남' ? 'border-l-blue-500' : 'border-l-rose-500'} shadow-sm flex flex-col gap-2">
+                    <div class="flex justify-between items-center font-black"><span class="text-slate-800 text-xs">${m.name}</span><span class="text-[8px] text-slate-400 italic">${s.games || 0} ${t.played}</span></div>
+                    <div class="grid grid-cols-2 gap-2 text-[10px] font-bold"><div class="bg-slate-50 p-2 rounded-xl text-center font-black italic">${s.wins || 0}W ${s.losses || 0}L</div><div class="bg-slate-50 p-2 rounded-xl text-center font-black italic">${s.ptsWon || 0}:${s.ptsLost || 0} (${d>=0?'+':''}${d})</div></div>
+                </div>`;
+            }).join('');
+        }
+
+        function copyToClipboard() {
+            if (stadium.length === 0) return alert(currentLang === 'ko' ? '대진표가 없습니다.' : 'No matches found.');
+            let text = `🎾 [UBUNTU ${translations[currentLang].matchSheet}]\n`;
+            document.querySelectorAll('.court-column').forEach(col => {
+                text += `\n📍 ${col.firstChild.innerText}\n`;
+                col.querySelectorAll('.match-card').forEach(card => {
+                    const time = card.querySelector('.text-blue-600').innerText;
+                    const p = Array.from(card.querySelectorAll('[data-id]')).map(p => p.innerText.split('\n')[0].trim());
+                    if(p.length >= 4) text += `${time} | ${p[0]},${p[1]} VS ${p[2]},${p[3]}\n`;
+                });
+            });
+            const textarea = document.createElement("textarea");
+            textarea.value = text; document.body.appendChild(textarea);
+            textarea.select(); try { document.execCommand('copy'); alert(currentLang === 'ko' ? '복사 완료!' : 'Copied to clipboard!'); } catch(e) { alert('Fail'); }
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>
