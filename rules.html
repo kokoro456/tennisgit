@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="KTA, KATO, KATA 등 한국 3대 테니스 협회의 경기 규칙 및 동호인 랭킹 대회 규정 완벽 정리">
-    <title>한국 동호인 테니스 협회별 규칙 가이드 - UBUNTU TENNIS</title>
+    <meta name="description" content="KATO, KATA, KTA 등 한국 테니스 협회별 상세 규정 및 랭킹 시스템 안내">
+    <title>테니스 협회별 상세 규정 가이드 - UBUNTU TENNIS</title>
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js?id=ca-pub-4308556336183383" crossorigin="anonymous"></script>
@@ -19,154 +19,247 @@
     <link href="./dist/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1e293b; }
-        .prose h2 { margin-top: 3.5rem; margin-bottom: 1.5rem; font-weight: 900; font-size: 2rem; color: #0f172a; border-left: 6px solid #10b981; padding-left: 1.5rem; }
-        .prose h3 { margin-top: 2rem; margin-bottom: 1rem; font-weight: 800; font-size: 1.4rem; color: #065f46; }
-        .prose p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; color: #475569; }
-        .rule-card { background: #f0fdfa; border: 1px solid #ccfbf1; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; }
-        .rule-card h4 { font-weight: 800; color: #0d9488; margin-bottom: 1rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; }
-        .comparison-table { width: 100%; border-collapse: collapse; margin: 2.5rem 0; font-size: 0.9rem; }
-        .comparison-table th, .comparison-table td { border: 1px solid #e2e8f0; padding: 1.2rem; text-align: left; }
-        .comparison-table th { background: #f8fafc; font-weight: 800; color: #0f172a; }
-        .hero-rules { background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%); }
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1e293b; scroll-behavior: smooth; }
+        .prose h2 { margin-top: 4rem; margin-bottom: 1.5rem; font-weight: 900; font-size: 2rem; color: #0f172a; border-left: 6px solid #2563eb; padding-left: 1.5rem; }
+        .prose h3 { margin-top: 2.5rem; margin-bottom: 1.25rem; font-weight: 800; font-size: 1.5rem; color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 0.5rem; }
+        .prose h4 { margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; font-size: 1.1rem; color: #2563eb; }
+        .rule-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.85rem; border-radius: 1rem; overflow: hidden; border: 1px solid #e2e8f0; }
+        .rule-table th, .rule-table td { padding: 1rem; border: 1px solid #e2e8f0; text-align: center; }
+        .rule-table th { background: #f8fafc; font-weight: 800; color: #475569; }
+        .info-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; }
+        .info-card h5 { font-weight: 800; color: #0f172a; margin-bottom: 1rem; }
+        .ethics-item { border-bottom: 1px solid #f1f5f9; padding: 1rem 0; }
+        .ethics-item:last-child { border-bottom: none; }
+        .ethics-title { font-weight: 800; color: #2563eb; margin-bottom: 0.25rem; display: block; }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6">
-        <div class="max-w-5xl mx-auto h-16 flex justify-between items-center">
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
             <a href="./index.html" class="text-xl font-black italic tracking-tighter text-slate-900 uppercase">
                 UBUNTU <span class="text-blue-600">TENNIS</span>
             </a>
             <div class="flex gap-6 text-xs font-bold uppercase tracking-widest text-slate-500">
-                <a href="./index.html" class="hover:text-blue-600 transition-colors">Blog</a>
-                <a href="./app.html" class="hover:text-blue-600 transition-colors">App</a>
+                <a href="./index.html" class="hover:text-blue-600">Home</a>
+                <a href="#kato" class="hover:text-blue-600">KATO</a>
+                <a href="#kata" class="hover:text-blue-600">KATA</a>
+                <a href="#kta" class="hover:text-blue-600">KTA</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header -->
-    <header class="hero-rules py-24 px-4 border-b border-teal-100">
-        <div class="max-w-3xl mx-auto text-center">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-teal-100 text-teal-700 text-[10px] font-black uppercase tracking-[0.2em] mb-6">Tournament Rules</span>
-            <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-8 tracking-tight leading-tight uppercase italic">
-                한국 테니스 <span class="text-teal-600">3대 협회</span> <br>규정 완벽 가이드
-            </h1>
-            <p class="text-lg text-slate-500 font-medium leading-relaxed">
-                KTA, KATO, KATA... 복잡한 국내 테니스 협회별 특징과 랭킹 시스템을 한눈에 정리했습니다.
-            </p>
-        </div>
-    </header>
-
-    <main class="max-w-3xl mx-auto px-6 py-20">
-        <article class="prose prose-teal lg:prose-xl mx-auto">
+    <main class="max-w-4xl mx-auto px-6 py-20">
+        <article class="prose max-w-none">
             
-            <p class="text-xl font-medium text-slate-600 leading-relaxed mb-16 border-l-4 border-teal-500 pl-6 italic">
-                "전국 대회에 출전하고 싶으신가요? 본인의 실력에 맞는 부서를 찾고, 협회별 랭킹 산정 방식을 이해하는 것이 첫걸음입니다."
-            </p>
+            <header class="mb-20 text-center">
+                <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter italic uppercase">
+                    Association <br><span class="text-blue-600">Rulebook</span>
+                </h1>
+                <p class="text-lg text-slate-500 font-medium">대한민국 테니스 동호인 대회의 모든 규정을 집대성했습니다.</p>
+            </header>
 
-            <h2>1. 한국 테니스 생태계의 중심: 3대 협회</h2>
-            <p>한국의 동호인 테니스는 크게 대한테니스협회(KTA), 한국동호인테니스연맹(KATO), 그리고 (사)한국동호인테니스협회(KATA)라는 세 축을 중심으로 운영됩니다.</p>
+            <!-- KATO Section -->
+            <section id="kato">
+                <h2>KATO: 한국동호인테니스연맹 규정</h2>
+                
+                <div class="info-card bg-blue-50 border-blue-100">
+                    <h5>◈ 2024년 랭킹규정변경안 (2024.03.01 시행)</h5>
+                    <ul class="text-sm space-y-3 text-slate-600">
+                        <li><strong>1) 협력 관계:</strong> KATO와 KTA는 우승/입상 실적을 상호 인정하며 상벌 징계 사항을 공유합니다.</li>
+                        <li><strong>2) KATA 실적 불인정:</strong> 2023년 1월 1일 이후 KATA의 전 부서 우승 및 입상은 인정하지 않습니다.</li>
+                        <li><strong>3) 우승자 인정 기준:</strong> 2023년 5월 15일부터 소급 적용되며, 각 부서별 <strong>KATO, KTA 합산 입상 4회</strong> 시 우승자로 인정됩니다.</li>
+                    </ul>
+                </div>
 
-            <div class="overflow-x-auto">
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>협회</th>
-                            <th>주요 특징</th>
-                            <th>대표 부서</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="font-bold">KTA</td>
-                            <td>국가 공인 기구, 엘리트와 동호인 통합 관리</td>
-                            <td>전국동호인 랭킹전</td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">KATO</td>
-                            <td>전국 규모의 가장 활발한 동호인 리그 운영</td>
-                            <td>신인부, 오픈부, 국화부</td>
-                        </tr>
-                        <tr>
-                            <td class="font-bold">KATA</td>
-                            <td>전통적인 강호들이 모인 탄탄한 대회 규정</td>
-                            <td>베테랑부, 장년부, 지도자부</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <h3>1. 출전자격규정</h3>
+                
+                <h4>[남자부서 출전나이 상세표]</h4>
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>청년부 (20세↑)</th>
+                                <th>장년부 (40세↑)</th>
+                                <th>베테랑부 (50세↑)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">순수동호인</td>
+                                <td>주민상 20세 이상</td>
+                                <td>주민상 40세 이상</td>
+                                <td>주민상 50세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">초등선출/지도자</td>
+                                <td>35세 이상</td>
+                                <td>45세 이상</td>
+                                <td>55세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">중학교 선출</td>
+                                <td>40세 이상</td>
+                                <td>50세 이상</td>
+                                <td>60세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">고교이상 선출</td>
+                                <td>50세 이상</td>
+                                <td>60세 이상</td>
+                                <td>65세 이상</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <h2>2. 협회별 상세 규정 분석</h2>
+                <h4>[여자부서 출전나이 상세표 - 2025 기준]</h4>
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>국화부</th>
+                                <th>개나리부</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">순수동호인</td>
+                                <td>개나리부 우승자</td>
+                                <td>주민상 20세 이상</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">초등 연식출신</td>
+                                <td>41세 이상 (2025년)</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">일반지도자/초등선출</td>
+                                <td>45세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">중학교 선출</td>
+                                <td>50세 이상</td>
+                                <td>해당없음</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <section id="kta">
-                <h3>대한테니스협회 (KTA)</h3>
-                <p>KTA는 한국 테니스의 모체로서, 랭킹 대회 시스템의 표준을 제공합니다. KTA 랭킹 포인트는 국내에서 가장 권위 있는 지표로 인정받습니다.</p>
-                <div class="rule-card">
-                    <h4>핵심 규정: 승급 제도</h4>
-                    <p class="text-sm text-slate-600 mb-0">
-                        전국 규모의 KTA 랭킹 대회 우승자는 해당 부서에서 즉시 승급되어 다음 대회부터 상위 부서로 출전해야 합니다. 이는 동호인 실력 평준화의 핵심 규칙입니다.
-                    </p>
+                <div class="info-card">
+                    <h5>부서별 핵심 공통사항</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                        <div>
+                            <span class="ethics-title">개나리부/챌린저부</span>
+                            <p>비우승자 전용 종목이며 만 20세 이상 출전 가능합니다. 타 단체(KTA 포함) 모든 부서 우승자는 출전이 불가합니다.</p>
+                        </div>
+                        <div>
+                            <span class="ethics-title">국화부/마스터스부</span>
+                            <p>합산 점수제(국화 10점 이하, 마스터스 11점 이하)를 적용하여 파트너를 구성해야 합니다. 만 60세 이상은 매년 등급 하향 조정 혜택이 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>2. 랭킹규정</h3>
+                <p>KATO 랭킹은 1년간 32강 이상 성적을 거둔 대회를 기준으로 산정됩니다.</p>
+                
+                <h4>[랭킹 그레이드 포인트 산정표]</h4>
+                <div class="overflow-x-auto">
+                    <table class="rule-table">
+                        <thead>
+                            <tr>
+                                <th>GRADE</th>
+                                <th>1위</th>
+                                <th>2위</th>
+                                <th>4강</th>
+                                <th>8강</th>
+                                <th>16강</th>
+                                <th>32강</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-blue-50/50">
+                                <td class="font-bold">GM (우승자오픈)</td>
+                                <td>240</td>
+                                <td>180</td>
+                                <td>120</td>
+                                <td>50</td>
+                                <td>25</td>
+                                <td>15</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">MA (마스터스)</td>
+                                <td>200</td>
+                                <td>140</td>
+                                <td>90</td>
+                                <td>40</td>
+                                <td>20</td>
+                                <td>11</td>
+                            </tr>
+                            <tr class="bg-blue-50/50">
+                                <td class="font-bold">A (A그룹)</td>
+                                <td>160</td>
+                                <td>112</td>
+                                <td>72</td>
+                                <td>32</td>
+                                <td>16</td>
+                                <td>10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>3. 선수윤리규정</h3>
+                <div class="space-y-2">
+                    <div class="ethics-item">
+                        <span class="ethics-title">제2조 선수의 의무</span>
+                        <p class="text-sm text-slate-500">폭력 행사나 인격 위협 언행 시 출장정지 등 중징계. 비신사적 행위 시 즉시 실격 가능.</p>
+                    </div>
+                    <div class="ethics-item">
+                        <span class="ethics-title">제4조 고의 우승 회피</span>
+                        <p class="text-sm text-slate-500">우승을 고의로 회피할 경우 1년 이상 출전 정지 및 복귀 시 우승자 신분 강제 부여.</p>
+                    </div>
+                    <div class="ethics-item">
+                        <span class="ethics-title">제11조 코칭 금지</span>
+                        <p class="text-sm text-slate-500">경기 중 또는 코트 체인지 시 어떠한 코칭도 불가하며, 위반 시 해당 선수 실격 처리.</p>
+                    </div>
+                    <div class="ethics-item">
+                        <span class="ethics-title">제16조 삼진아웃제</span>
+                        <p class="text-sm text-slate-500">3년 동안 합 3회 이상 징계(경고 제외) 시 영구 출전정지 처분.</p>
+                    </div>
                 </div>
             </section>
 
-            <section id="kato" class="mt-20">
-                <h3>한국동호인테니스연맹 (KATO)</h3>
-                <p>가장 대중적인 협회로, 주말마다 전국 각지에서 열리는 대회를 주관합니다. KATO 랭킹은 동호인들 사이에서 실력의 척도로 통합니다.</p>
-                <ul class="list-disc pl-6 space-y-4">
-                    <li><strong>신인부 규정:</strong> 순수 동호인으로서 대회 우승 경력이 없어야 참가 가능.</li>
-                    <li><strong>오픈부 규정:</strong> 선수 출신이나 지도자가 파트너로 참여할 수 있는 최상위 레벨.</li>
-                    <li><strong>국화부/개나리부:</strong> 여성 동호인들을 위한 전용 부서로, 실력에 따라 철저히 분리 운영.</li>
-                </ul>
+            <!-- KATA & KTA Placeholders -->
+            <section id="kata" class="mt-32">
+                <h2>KATA: 한국동호인테니스협회</h2>
+                <p>KATA는 전통적인 강호들이 모이는 협회로, 특히 포인트 합산 시스템을 통한 팀 전력 균형 유지에 강점이 있습니다. (상세 규정 업데이트 예정)</p>
             </section>
 
-            <section id="kata" class="mt-20">
-                <h3>(사)한국동호인테니스협회 (KATA)</h3>
-                <p>KATA는 엄격한 대회 규정과 공정한 운영으로 유명합니다. 특히 '베테랑부'와 '장년부' 등 연령별 부서가 매우 체계적으로 관리됩니다.</p>
-                <div class="rule-card bg-slate-50 border-slate-200">
-                    <h4>포인트 합산 제도</h4>
-                    <p class="text-sm text-slate-600 mb-0">
-                        복식 파트너 구성 시, 두 선수의 랭킹 포인트 합계가 일정 수준을 넘지 못하게 제한하여 '전략적 우승 팀' 구성을 방지하는 로컬 룰을 자주 적용합니다.
-                    </p>
-                </div>
+            <section id="kta" class="mt-32">
+                <h2>KTA: 대한테니스협회</h2>
+                <p>대한민국 테니스의 공식 기구로서 엘리트와 동호인을 통합 관리하며 국제 기준(ITF)을 준수합니다. (상세 규정 업데이트 예정)</p>
             </section>
-
-            <h2>3. 동호인 대회의 공통 규칙: 셀프 저지</h2>
-            <p>협회를 막론하고 대부분의 동호인 대회 본선 전까지는 선수들이 직접 판정하는 **'셀프 저지(Self-Judge)'**가 원칙입니다. 이때 USTA에서 정립된 'The Code'를 한국 실정에 맞게 적용합니다.</p>
-            <ol>
-                <li><strong>모든 혜택은 상대방에게:</strong> 선에 조금이라도 닿았다면 무조건 'In'입니다.</li>
-                <li><strong>즉각적인 콜:</strong> 판정은 지체 없이 이루어져야 하며, 공이 바운드된 후 리턴을 한 뒤에는 'Out' 콜을 할 수 없습니다.</li>
-                <li><strong>서브 판정:</strong> 서브의 인/아웃은 리시버가 전적으로 결정합니다.</li>
-            </ol>
-
-            <!-- Deployment Content for AdSense -->
-            <div class="mt-32 p-12 bg-slate-900 rounded-[3rem] text-white">
-                <h3 class="text-2xl font-black mb-6 italic uppercase tracking-tighter">Ready for the Match?</h3>
-                <p class="text-slate-400 mb-8 leading-relaxed">
-                    이제 협회 규정을 이해했다면, UBUNTU 매칭 시스템을 사용하여 동호회 자체 대회를 열어보세요. KTA 방식의 공정한 팀 배분을 지원합니다.
-                </p>
-                <a href="./app.html" class="inline-block bg-teal-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-teal-500 transition-all shadow-xl shadow-teal-900/20">
-                    Launch Matcher Tool →
-                </a>
-            </div>
 
         </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-100 py-16 px-4">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-            <div class="text-center md:text-left">
-                <a href="./index.html" class="text-2xl font-black italic tracking-tighter text-slate-900 uppercase">
-                    UBUNTU <span class="text-blue-600">TENNIS</span>
+    <footer class="bg-slate-900 text-white py-20 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div>
+                <a href="./index.html" class="text-2xl font-black italic tracking-tighter uppercase">
+                    UBUNTU <span class="text-blue-500">TENNIS</span>
                 </a>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mt-3">© 2026 Official Rules Guide. Powered by Ubuntu Systems.</p>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-2">© 2026 Ubuntu Rules Archive. All rights reserved.</p>
             </div>
-            <div class="flex gap-10 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                <a href="./privacy.html" class="hover:text-teal-600 transition-colors">Privacy</a>
-                <a href="./terms.html" class="hover:text-teal-600 transition-colors">Terms</a>
-                <a href="mailto:kokoro456@gmail.com" class="hover:text-teal-600 transition-colors">Contact</a>
+            <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest">
+                <a href="./privacy.html" class="hover:text-blue-400">Privacy</a>
+                <a href="./terms.html" class="hover:text-blue-400">Terms</a>
+                <a href="mailto:kokoro456@gmail.com" class="hover:text-blue-400">Contact</a>
             </div>
         </div>
     </footer>
